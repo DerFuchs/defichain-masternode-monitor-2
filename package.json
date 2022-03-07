@@ -11,6 +11,7 @@
     "test": "echo \"No test specified\" && exit 0"
   },
   "dependencies": {
+    "@defichain/whale-api-client": "^0.27.0",
     "@fortawesome/fontawesome-pro": "^6.0.0",
     "@quasar/extras": "^1.0.0",
     "axios": "^0.21.1",

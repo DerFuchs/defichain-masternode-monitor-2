@@ -2,7 +2,7 @@
   <q-layout view="lHh Lpr lFf">
     <q-header class="bg-primary text-white" height-hint="98">
       <q-toolbar>
-        <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
+        <q-btn dense flat round icon="fal fa-bars" @click="toggleLeftDrawer" />
       </q-toolbar>
       <q-tabs align="left" dense inline-label outside-arrows mobile-arrows>
         <q-route-tab to="/page1" label="Page One" />

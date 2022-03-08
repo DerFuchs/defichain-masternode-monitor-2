@@ -1,6 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header class="bg-primary text-white" height-hint="98">
+    <q-header class="bg-primary-dark text-white" height-hint="98">
       <q-toolbar>
         <q-btn dense flat round icon="fal fa-bars" @click="toggleLeftDrawer" />
       </q-toolbar>
@@ -29,7 +29,7 @@
       <router-view />
     </q-page-container>
 
-    <q-footer class="bg-grey-8 text-white">
+    <q-footer class="bg-primary-dark text-white">
       <q-toolbar>
         <q-toolbar-title>
           <div>Blockping</div>
@@ -65,6 +65,8 @@ const linksList = [
 
 import { defineComponent, ref } from "vue";
 
+import { useBasicsStore } from "stores/basics";
+
 export default defineComponent({
   name: "MainLayout",
 
@@ -74,10 +76,13 @@ export default defineComponent({
 
   setup() {
     const leftDrawerOpen = ref(false);
+    const store = useBasicsStore();
+    store.fetchAllMintings();
 
     return {
       essentialLinks: linksList,
       leftDrawerOpen,
+      store,
       toggleLeftDrawer() {
         leftDrawerOpen.value = !leftDrawerOpen.value;
       },

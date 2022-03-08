@@ -9,6 +9,7 @@
 /* eslint-env node */
 const ESLintPlugin = require("eslint-webpack-plugin");
 const { configure } = require("quasar/wrappers");
+const path = require('path');
 
 module.exports = configure(function (ctx) {
   return {
@@ -21,7 +22,8 @@ module.exports = configure(function (ctx) {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://quasar.dev/quasar-cli/boot-files
-    boot: ["i18n", "axios", "fontawesome-pro"],
+    //boot: ["i18n", "axios"],
+    boot: ["fontawesome-pro", "defichain-whale", "pinia"],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
     css: ["app.scss"],
@@ -43,6 +45,22 @@ module.exports = configure(function (ctx) {
     // Full list of options: https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-build
     build: {
       vueRouterMode: "hash", // available values: 'hash', 'history'
+
+      // Enable .env file for configuration
+      env: {
+        "DEBUG": true,
+
+        "VERSION": '100',
+        "RELEASE_DATE": '4/20/69',
+
+        "OCEAN_URL": 'https://ocean.defichain.com',
+        "OCEAN_TIMEOUT": 60000,
+        "OCEAN_VERSION": 'v0',
+        "OCEAN_NETWORK": 'mainnet',
+        "OCEAN_MAX_PAGE_SIZE": 200,
+
+        ...(require('dotenv').config().parsed),
+      },
 
       // transpile: false,
       // publicPath: '/',
@@ -67,6 +85,9 @@ module.exports = configure(function (ctx) {
         chain
           .plugin("eslint-webpack-plugin")
           .use(ESLintPlugin, [{ extensions: ["js", "vue"] }]);
+
+        chain.resolve.alias
+          .set('stores', path.resolve(__dirname, './src/stores'))
       },
     },
 

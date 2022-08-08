@@ -6,21 +6,27 @@ import {
   defichain
 } from "boot/defichain-whale"
 
+import { useQuasar } from 'quasar'
+
 export const useBasicsStore = defineStore('basics',
 {
   state: () => ({
     version: '200',
     fetchingDataList: [],
   }),
+
   persistedState: {
     key: 'mamon-basics',
   },
+
   getters: {
     fetching: state => state.fetchingDataList.length > 0,
     fetchingMintings: state => {
       return state.fetchingDataList.filter(entry => entry.startsWith('mintings_'))
     },
+    darkMode: () => useQuasar().dark.isActive
   },
+
   actions: {
 
     setFetching(key) {

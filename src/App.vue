@@ -1,38 +1,47 @@
 <template>
-	<router-view />
+  <router-view />
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { defineComponent, watch, toRef } from "vue";
+import { useQuasar } from "quasar";
+
 import { useBasicsStore } from "stores/basics";
-import { useMasterNodesStore } from "stores/masternodes";
+import { useUserStore } from "stores/user";
+import { useDeFiChainStore } from "src/stores/defichain";
 
 export default defineComponent({
-	name: "App",
-	setup() {
-		const store = useBasicsStore();
-		//store.fetchAllMintings();
+  name: "App",
+  setup() {
+    const quasar = useQuasar();
+    //const basics = useBasicsStore();
+    const user = useUserStore();
+    const deFiChain = useDeFiChainStore();
 
-		/*
-		const masterNodesStore = useMasterNodesStore();
+    //basics.fetchAllMintings();
 
-		masterNodesStore.$persistedState
-			.isReady()
-			.then(() => {
-				if (!masterNodesStore.hasMasterNodeList) {
-					if (process.env.DEBUG)
-						console.log("Fetching list of all known master nodes");
-					masterNodesStore.fetchAllKnownDeFiChainMasterNodes();
-				}
-			})
-			.then(() => {
-				if (process.env.DEBUG)
-					console.log(
-						"Number of known master nodes:",
-						masterNodesStore.masterNodes.length
-					);
-			});
-      */
-	},
+    // Initialize dark mode and react to changes of it's setting
+    const darkModeSetting = toRef(user.settings, "darkMode");
+    quasar.dark.set(darkModeSetting);
+    watch(darkModeSetting, (newSetting) => {
+      quasar.dark.set(newSetting);
+    });
+
+    deFiChain.$persistedState
+      .isReady()
+      .then(() => {
+        if (!deFiChain.hasKnownMasterNodeList) {
+          if (process.env.DEBUG) console.log("Fetching list of all known master nodes");
+          deFiChain.fetchAllKnownDeFiChainMasterNodes();
+        }
+      })
+      .then(() => {
+        if (process.env.DEBUG)
+          console.log(
+            "Number of known master nodes:",
+            deFiChain.allKnownMasterNodes.length
+          );
+      });
+  },
 });
 </script>

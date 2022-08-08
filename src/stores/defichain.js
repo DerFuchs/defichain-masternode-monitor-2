@@ -10,23 +10,24 @@ import {
   defichain
 } from "boot/defichain-whale"
 
-// useStore could be anything like useUser, useCart
-// the first argument is a unique id of the store across your application
-export const useMasterNodesStore = defineStore('masternodes',{
+export const useDeFiChainStore = defineStore('defichain',{
   state: () => ({
     masterNodes: [],
-    allKnownDeFiChainMasterNodes: [],
+    allKnownMasterNodes: [],
   }),
+
   persistedState: {
     key: 'mamon-masternodes',
   },
+
   getters: {
-    hasMasterNodeList: state => state.allKnownDeFiChainMasterNodes.length > 0
+    hasKnownMasterNodeList: state => state.allKnownMasterNodes.length > 0
   },
+
   actions: {
     async fetchAllKnownDeFiChainMasterNodes() {
       const basicsStore = useBasicsStore()
-      if (process.env.DEBUG) console.log('Fetching all known master nodes')
+      if (process.env.DEBUG) console.log('Fetching all known master nodes from DeFiChain')
       basicsStore.setFetching('masternode_list')
       let masterNodeList = []
       try {
@@ -41,7 +42,7 @@ export const useMasterNodesStore = defineStore('masternodes',{
           nextPage = await defichain.paginate(currentPage)
         } while (nextPage.length > 0)
       } finally {
-        this.allKnownDeFiChainMasterNodes = masterNodeList
+        this.allKnownMasterNodes = masterNodeList
         basicsStore.setFetchingFinished('masternode_list')
         if (process.env.DEBUG) console.log('finished fetching all known master nodes')
       }

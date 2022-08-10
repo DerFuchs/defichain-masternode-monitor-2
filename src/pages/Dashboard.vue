@@ -1,7 +1,7 @@
 <template>
 	<q-page class="flex flex-center">
 		{{ store.fetching }}
-		{{ store.fetchingMintings.length }}
+		{{ store.fetchingMintingsCount.length }}
 	</q-page>
 </template>
 

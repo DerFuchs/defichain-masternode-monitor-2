@@ -3,7 +3,7 @@
     <template #description>
       {{ quote }}
     </template>
-    <q-item v-ripple class="q-px-none" tag="label">
+    <q-item class="q-px-none" tag="label">
       <q-item-section>
         <q-item-label v-if="active">Dark Mode Active</q-item-label>
         <q-item-label v-else>Light Mode Active</q-item-label>

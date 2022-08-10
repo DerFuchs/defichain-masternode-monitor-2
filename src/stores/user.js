@@ -1,6 +1,6 @@
-import {
-  defineStore
-} from 'pinia';
+import { defineStore } from 'pinia';
+import { useDeFiChainStore } from "stores/defichain";
+import { useBasicsStore } from "stores/basics";
 
 export const useUserStore = defineStore('user',{
   state: () => ({
@@ -12,10 +12,17 @@ export const useUserStore = defineStore('user',{
     },
 
     masterNodesEntryDefaults: {
+      name: '',
+      id: '',
       ownerAddress: '',
       operatorAddress: '',
-      name: '',
-    }
+      creationBlock: 0,
+      mintedBlocks: 0,
+      state: '',
+      timelock: '',
+    },
+
+    //defichain: useDeFiChainStore(),
   }),
 
   // --------------------------------------------------------------------------------
@@ -72,19 +79,31 @@ export const useUserStore = defineStore('user',{
      *
      * @param {String} deFiChainAddress
      */
-    setMasterNode(deFiChainAddress) {
-
-      // TODO: Magic to find out weather the address is an operator address or operator address and vice versa
+    async addWatchedMasterNode(deFiChainAddress, name = '') {
+      const basicsStore = useBasicsStore()
+      const processingKey = 'add_watched_master_node_' + deFiChainAddress
 
       // TODO: Don't add a new entry to the masterNodes list when it is already in there
 
-      const ownerAddress = "foobar"
-      const operatorAddress = "foobar"
+      basicsStore.setProcessing(processingKey)
+
+      const masterNodeDetails = await useDeFiChainStore().masterNodeDetails(deFiChainAddress)
 
       this.masterNodes.push({
-        ownerAddress: ownerAddress,
-        operatorAddress: operatorAddress,
+        name: name,
+        id: masterNodeDetails.id,
+        ownerAddress: masterNodeDetails.owner.address,
+        operatorAddress: masterNodeDetails.operator.address,
+        creationBlock: masterNodeDetails.creation.height,
+        resignBlock: masterNodeDetails.resign?.height ?? 0,
+        mintedBlocks: [],
+        state: masterNodeDetails.state,
+        timelock: masterNodeDetails.timelock,
+        raw: masterNodeDetails,
+
       })
+
+      basicsStore.setProcessingFinished(processingKey)
     },
 
     /**

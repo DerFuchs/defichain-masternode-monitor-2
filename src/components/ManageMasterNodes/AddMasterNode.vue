@@ -1,11 +1,10 @@
 <template>
   <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
     <q-card class="full-width" :class="{ 'bg-grey-2': basics.darkMode === false }">
-      <q-card-section class="text-h6 q-py-sm">
-        Add Master Node
-        {{ user.darkMode }}
-      </q-card-section>
-      <q-separator />
+      <q-card-section class="text-h6 q-py-sm"> Add Master Node </q-card-section>
+
+      <q-separator :class="{ 'light-gradient': user.settings.colorfulMode }" />
+
       <q-card-section>
         <!-- INPUT: master node name -->
         <q-input
@@ -38,7 +37,7 @@
           no-caps
           icon="fa-light fa-circle-plus"
           @click="
-            user.setMasterNode(newMasterNodeAddress);
+            user.addWatchedMasterNode(newMasterNodeAddress, newMasterNodeName);
             clear();
           "
         >
@@ -47,6 +46,16 @@
           </div>
         </q-btn>
       </q-card-section>
+      <q-card-section class="q-pt-none text-caption text-grey-8">
+        Master Node Monitor will have to fetch all available Master Nodes from
+        DeFiChain.<br />
+        This includes roughly ~15 Megabytes of data and will take some time, depending on
+        the speed of your internet connection.
+      </q-card-section>
+
+      <q-inner-loading :showing="basics.isProcessing('add_watched_master_node')">
+        <q-spinner-puff size="50px" color="primary" />
+      </q-inner-loading>
     </q-card>
   </div>
 </template>

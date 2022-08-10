@@ -4,6 +4,7 @@
       <master-node-entry
         v-for="masterNode in user.masterNodes"
         :key="masterNode.ownerAddress"
+        :data="masterNode"
       />
       <add-master-node />
     </div>

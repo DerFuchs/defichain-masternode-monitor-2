@@ -23,19 +23,29 @@ const setDefault = (component, key, value) => {
   }
 };
 
+// ----------------------------------------------------------------------------------
+
 import { QBtn } from "quasar";
 
 setDefault(QBtn, "unelevated", true);
 setDefault(QBtn, "rounded", true);
 setDefault(QBtn, "color", 'primary');
 
+// ----------------------------------------------------------------------------------
 
 import { QCard } from "quasar";
 
 setDefault(QCard, "flat", true);
-//setDefault(QCard, "bordered", true);
 
+// ----------------------------------------------------------------------------------
 
 import { QInput } from "quasar";
 
 setDefault(QInput, "outlined", true);
+
+// ----------------------------------------------------------------------------------
+
+import { QExpansionItem } from "quasar"
+setDefault(QExpansionItem, "expandIcon", "fa-light fa-circle-chevron-down");
+
+// ----------------------------------------------------------------------------------

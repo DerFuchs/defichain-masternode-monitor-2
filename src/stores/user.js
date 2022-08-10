@@ -55,10 +55,10 @@ export const useUserStore = defineStore('user',{
      * Checks if provided DeFiChain address is available in the user's master node
      * list, no matter if it is an onwer address or an operator address.
      *
-     * @param {String} deFiChainAddress
+     * @param {String} identifier
      * @returns Boolean
      */
-    watchesMasterNode: state => deFiChainAddress => state.masterNodes.some(entry => entry.ownerAddress == deFiChainAddress || entry.operatorAddress == deFiChainAddress),
+    watchesMasterNode: state => identifier => state.masterNodes.some(entry => entry.ownerAddress == identifier || entry.operatorAddress == identifier || entry.id == identifier),
 
     /**
      * Return the user's settings value
@@ -77,17 +77,18 @@ export const useUserStore = defineStore('user',{
      *
      * It doesn't matter if address is an onwer address or an operator address
      *
-     * @param {String} deFiChainAddress
+     * @param {String} identifier
      */
-    async addWatchedMasterNode(deFiChainAddress, name = '') {
-      const basicsStore = useBasicsStore()
-      const processingKey = 'add_watched_master_node_' + deFiChainAddress
+    async addWatchedMasterNode(identifier, name = '') {
+      if (this.watchesMasterNode(identifier)) return
 
-      // TODO: Don't add a new entry to the masterNodes list when it is already in there
+      const basicsStore = useBasicsStore()
+      const defichain = useDeFiChainStore()
+      const processingKey = 'add_watched_master_node_' + identifier
 
       basicsStore.setProcessing(processingKey)
 
-      const masterNodeDetails = await useDeFiChainStore().masterNodeDetails(deFiChainAddress)
+      const masterNodeDetails = await defichain.masterNodeDetails(identifier)
 
       this.masterNodes.push({
         name: name,
@@ -106,15 +107,40 @@ export const useUserStore = defineStore('user',{
       basicsStore.setProcessingFinished(processingKey)
     },
 
+    // ------------------------------------------------------------------------------
+
     /**
      * Removes a master node from the user's watch list.
      *
-     * It doesn't matter if address is an onwer address or an operator address
+     * identifier can be ownerAddress, operatorAddress or DeFiChain master node ID
      *
-     * @param {String} deFiChainAddress
+     * @param {String} identifier
      * */
-    removeMasterNode(deFiChainAddress) {
-      // TODO: Remove magic
-    }
+    removeWatchedMasterNode(identifier) {
+      if (!this.watchesMasterNode(identifier)) return
+      const index = this.masterNodes.findIndex(entry => entry.ownerAddress == identifier || entry.operatorAddress == identifier || entry.id == identifier)
+      if (index > -1) {
+        this.masterNodes.splice(index, 1);
+      }
+    },
+
+    // ------------------------------------------------------------------------------
+
+    /**
+     * Sets a new name to a particular watched master node
+     *
+     * @param {String} identifier
+     * @param {String} newName
+     */
+    renameMasterNode(identifier, newName) {
+      if (!this.watchesMasterNode(identifier)) return
+      const index = this.masterNodes.findIndex(entry => entry.ownerAddress == identifier || entry.operatorAddress == identifier || entry.id == identifier)
+      if (index > -1) {
+        this.masterNodes[index].name = newName;
+      }
+    },
+
+    // ------------------------------------------------------------------------------
+
   },
 })

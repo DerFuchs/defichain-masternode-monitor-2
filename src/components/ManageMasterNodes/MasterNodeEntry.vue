@@ -12,6 +12,7 @@
       <q-card-section class="q-px-none q-py-none">
         <q-expansion-item class="q-pa-none q-ma-none">
           <template #header>
+            <!-- Master Node Name -->
             <q-item-section class="q-pa-none q-ma-none ellipsis">
               <div v-if="data.name" class="text-h6">{{ data.name }}</div>
               <span v-else class="text-h6"> Nameless Master Node </span>
@@ -20,28 +21,51 @@
 
           <q-card style="background: none !important">
             <q-card-section>
+              <!-- Edit Master Node Name -->
+              <q-input
+                v-model="newMasterNodeName"
+                label="Edit Name"
+                :class="{
+                  'bg-white': basics.darkMode === false,
+                  'bg-dark': basics.darkMode === true,
+                }"
+              >
+                <template #append>
+                  <q-btn
+                    flat
+                    icon="fa-light fa-floppy-disk"
+                    :disable="newMasterNodeName == data.name"
+                    :color="newMasterNodeName == data.name ? 'grey' : 'primary'"
+                    @click="user.renameMasterNode(data.id, newMasterNodeName)"
+                  />
+                </template>
+              </q-input>
+
+              <!-- Remove this watched master node -->
               <q-btn
-                label="edit name"
-                class="full-width light-gradient"
-                icon="fa-light fa-pen-circle"
-                dense
-              />
-              <q-btn
+                v-if="!displayConfirmRemovalBtn"
                 outline
                 label="remove"
                 class="full-width q-mt-sm"
                 icon="fa-light fa-circle-trash"
                 color="negative"
                 dense
+                @click="showConfirmRemoval(3000)"
+              />
+              <q-btn
+                v-if="displayConfirmRemovalBtn"
+                outline
+                label="sure? tap again to remove"
+                class="full-width q-mt-sm"
+                icon="fa-light fa-circle-question"
+                color="negative"
+                dense
+                @click="user.removeWatchedMasterNode(data.ownerAddress)"
               />
             </q-card-section>
           </q-card>
         </q-expansion-item>
       </q-card-section>
-
-      <!-- <q-card-section class="text-h6 q-py-sm">
-        {{ data.name }}
-      </q-card-section> -->
 
       <q-separator :class="{ 'light-gradient': user.settings.colorfulMode }" />
 
@@ -133,7 +157,7 @@
 </template>
 
 <script>
-import { defineComponent, computed } from "vue";
+import { defineComponent, computed, ref } from "vue";
 
 import { useBasicsStore } from "stores/basics";
 import { useUserStore } from "stores/user";
@@ -149,12 +173,24 @@ export default defineComponent({
   },
 
   setup(props) {
+    const displayConfirmRemovalBtn = ref(false);
+
     return {
       basics: useBasicsStore(),
       user: useUserStore(),
 
+      newMasterNodeName: ref(JSON.parse(JSON.stringify(props.data.name))),
+
       isFrozen: computed(() => props.data.timelock > 0),
       isResigned: computed(() => props.data.resignBlock > 0),
+      displayConfirmRemovalBtn,
+
+      showConfirmRemoval: (time) => {
+        displayConfirmRemovalBtn.value = true;
+        setTimeout(() => {
+          displayConfirmRemovalBtn.value = false;
+        }, time);
+      },
     };
   },
 });

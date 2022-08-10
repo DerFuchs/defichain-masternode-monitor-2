@@ -31,18 +31,21 @@
 
         <!-- BUTTON -->
         <q-btn
-          :disable="!addButtonEnabled"
-          :outline="!addButtonEnabled"
+          :disable="!addButtonEnabled || user.watchesMasterNode(newMasterNodeAddress)"
+          :outline="!addButtonEnabled || user.watchesMasterNode(newMasterNodeAddress)"
           class="q-mt-sm full-width"
           no-caps
-          icon="fa-light fa-circle-plus"
           @click="
             user.addWatchedMasterNode(newMasterNodeAddress, newMasterNodeName);
             clear();
           "
         >
           <div class="ellipsis">
-            &nbsp;{{ $t("manageMasterNodes.addBtnLabel", { name: addButtonLabel }) }}
+            <span v-if="!user.watchesMasterNode(newMasterNodeAddress)">
+              <q-icon name="fa-light fa-circle-plus" class="q-mr-xs" />
+              {{ $t("manageMasterNodes.addBtnLabel", { name: addButtonLabel }) }}
+            </span>
+            <span v-else>you already watch this master node</span>
           </div>
         </q-btn>
       </q-card-section>

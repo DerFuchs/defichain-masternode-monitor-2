@@ -1,6 +1,9 @@
 <template>
   <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
-    <q-card class="full-width" :class="{ 'bg-grey-2': basics.darkMode === false }">
+    <q-card
+      class="full-width full-height"
+      :class="{ 'bg-grey-2': basics.darkMode === false }"
+    >
       <q-card-section class="text-h6 q-py-sm"> Add Master Node </q-card-section>
 
       <q-separator :class="{ 'light-gradient': user.settings.colorfulMode }" />

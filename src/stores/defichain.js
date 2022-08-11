@@ -120,7 +120,7 @@ export const useDeFiChainStore = defineStore('defichain',{
      */
     cleanupAllKnownMasterNodes() {
       const user = useUserStore()
-      this.allKnownMasterNodes = this.allKnownMasterNodes.filter(entry => user.masterNodes.some(masterNode => entry.id === masterNode.id))
+      this.allKnownMasterNodes = this.allKnownMasterNodes.filter(entry => user.watchedMasterNodes.some(masterNode => entry.id === masterNode.id))
     },
 
     // ------------------------------------------------------------------------------

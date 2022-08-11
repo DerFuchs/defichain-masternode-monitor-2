@@ -1,11 +1,11 @@
 <template>
   <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
     <q-card
-      class="full-width"
+      class="full-width full-height"
       :class="{
         'bg-grey-2': basics.darkMode === false,
-        frozen: isFrozen,
-        resigned: isResigned,
+        'icon-bg frozen': isFrozen,
+        'icon-bg resigned': isResigned,
       }"
       style="overflow: hidden"
     >
@@ -109,9 +109,22 @@
 
       <q-separator :class="{ 'light-gradient': user.settings.colorfulMode }" />
       <q-card-section>
-        <q-list>
+        <q-list class="row">
+          <!-- Minted Blocks Count -->
+          <q-item v-if="data.mintedBlocksCount" class="q-px-none col-6">
+            <q-item-section side>
+              <q-icon name="fa-light fa-cube" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label class="ellipsis">{{
+                data.mintedBlocksCount.toLocaleString()
+              }}</q-item-label>
+              <q-item-label caption>Minted Blocks</q-item-label>
+            </q-item-section>
+          </q-item>
+
           <!-- Created at block -->
-          <q-item class="q-px-none">
+          <q-item class="q-px-none col-6">
             <q-item-section side>
               <q-icon name="fa-light fa-hand-wave" />
             </q-item-section>
@@ -124,7 +137,7 @@
           </q-item>
 
           <!-- Frozen -->
-          <q-item v-if="isFrozen" class="q-px-none">
+          <q-item v-if="isFrozen" class="q-px-none col-6">
             <q-item-section side>
               <q-icon v-if="!isFrozen" name="fa-light fa-face-grin-stars" />
               <q-icon v-else name="fa-light fa-snowflake" color="light-blue" />
@@ -139,7 +152,7 @@
           </q-item>
 
           <!-- Resigned -->
-          <q-item v-if="isResigned" class="q-px-none">
+          <q-item v-if="isResigned" class="q-px-none col-6">
             <q-item-section side>
               <q-icon name="fa-light fa-skull" color="negative" />
             </q-item-section>
@@ -197,26 +210,22 @@ export default defineComponent({
 </script>
 
 <style lang="sass">
-.frozen:before
-  content: "\f2dc"
+.icon-bg:before
   font-family: 'Font Awesome 6 Pro'
-  color: $light-blue
   font-size: 250px
   right: -20px
   position: absolute
   top: -90px
   opacity: 0.07
+
+.frozen:before
+  content: "\f2dc"
+  color: $light-blue
 
 .resigned:before
   content: "\f54c"
-  font-family: 'Font Awesome 6 Pro'
   color: $negative
-  font-size: 250px
-  right: -20px
-  position: absolute
-  top: -90px
-  opacity: 0.07
 
-.body--dark .resigned:before
-  opacity: 0.15
+.body--dark .icon-bg:before
+  opacity: 0.13
 </style>

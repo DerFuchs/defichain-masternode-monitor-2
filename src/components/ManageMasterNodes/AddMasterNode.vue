@@ -22,7 +22,7 @@
                 old ones. This will not and cannot manipulate your masternodes.
               </p>
               <p>
-                Masternode Monitor also supports removed masternodes. If you regularly
+                Masternode Monitor also supports resigned masternodes. If you regularly
                 resign old and spin up new ones later, you can track them all to see a
                 history.
               </p>

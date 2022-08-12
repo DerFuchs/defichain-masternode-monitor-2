@@ -1,7 +1,11 @@
 <template>
   <q-tabs align="left" dense inline-label outside-arrows mobile-arrows shrink stretch>
     <q-tab label="all" />
-    <q-tab v-for="mn in user.watchedActiveMasterNodes" :key="mn.id" :label="mn.name" />
+    <q-tab
+      v-for="mn in user.watchedActiveMasterNodes"
+      :key="mn.id"
+      :label="masterNodeName(mn)"
+    />
     <!--
     <q-route-tab to="/page2" label="MN 2" />
     -->
@@ -16,8 +20,16 @@ import { useUserStore } from "stores/user";
 export default defineComponent({
   name: "MasterNodeTabs",
   setup() {
+    const user = useUserStore();
     return {
-      user: useUserStore(),
+      user,
+      masterNodeName: (mnData) => {
+        return mnData.name.length > 0
+          ? mnData.name
+          : mnData.ownerAddress.substring(0, 5) +
+              "…" +
+              mnData.ownerAddress.substr(mnData.ownerAddress.length - 5);
+      },
     };
   },
 });

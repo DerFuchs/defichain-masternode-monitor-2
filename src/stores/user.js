@@ -8,6 +8,9 @@ export const useUserStore = defineStore('user',{
     userId: '',
     watchedMasterNodes: [],
     settings: {
+      // chainNetwork: 'mainnet',
+      chainNetwork: process.env.OCEAN_NETWORK,
+      customOceanUrl: null,
       darkMode: 'auto',
       colorfulMode: false,
     },
@@ -26,7 +29,6 @@ export const useUserStore = defineStore('user',{
       raw: null,
     },
 
-    //defichain: useDeFiChainStore(),
   }),
 
   // --------------------------------------------------------------------------------
@@ -41,7 +43,7 @@ export const useUserStore = defineStore('user',{
 
     /**
      * Returns true if the user is 'authenticated' - which means that he/she has
-     * grabbed a sync key to store settings and watches master nodes remotely.
+     * grabbed a sync key to store settings and watches masternodes remotely.
      *
      * @param {*} state
      * @returns Boolean
@@ -49,14 +51,14 @@ export const useUserStore = defineStore('user',{
     hasUserId: state => state.userId.length > 0,
 
     /**
-     * Returns true if the user is watching at least one master node
+     * Returns true if the user is watching at least one masternode
      *
      * @returns  Boolean
      */
     watchesMasterNodes: state => state.watchedMasterNodes.length > 0,
 
     /**
-     * Checks if provided DeFiChain address is available in the user's master node
+     * Checks if provided DeFiChain address is available in the user's masternode
      * list, no matter if it is an onwer address or an operator address.
      *
      * @param {String} identifier
@@ -65,12 +67,12 @@ export const useUserStore = defineStore('user',{
     watchesMasterNode: state => identifier => state.watchedMasterNodes.some(entry => entry.ownerAddress == identifier || entry.operatorAddress == identifier || entry.id == identifier),
 
     /**
-     * Delivers only watches master nodes which are NOT resigned
+     * Delivers only watches masternodes which are NOT resigned
      */
     watchedActiveMasterNodes: state => state.watchedMasterNodes.filter(entry => entry.state != 'RESIGNED'),
 
     /**
-     * Returns the array index of the given master node identifier
+     * Returns the array index of the given masternode identifier
      */
     watchedMasterNodeIndex: state => identifier => state.watchedMasterNodes.findIndex(entry => entry.ownerAddress == identifier || entry.operatorAddress == identifier || entry.id == identifier)
 
@@ -80,7 +82,7 @@ export const useUserStore = defineStore('user',{
 
   actions: {
     /**
-     * Adds a master node to the user's watch list.
+     * Adds a masternode to the user's watch list.
      *
      * It doesn't matter if address is an onwer address or an operator address
      *
@@ -96,6 +98,11 @@ export const useUserStore = defineStore('user',{
       basicsStore.setProcessing(processingKey)
 
       const masterNodeDetails = await defichain.masterNodeDetails(identifier)
+
+      if (!masterNodeDetails) {
+        basicsStore.setProcessingFinished(processingKey)
+        return
+      }
 
       this.watchedMasterNodes.push({
         ...this.watchedMasterNodesEntryDefaults,
@@ -133,7 +140,6 @@ export const useUserStore = defineStore('user',{
 
     updateWatchedMasterNodeData(rawMasterNodeData) {
       const index = this.watchedMasterNodeIndex(rawMasterNodeData.id)
-      console.log(index)
       if (index === -1) return
 
       const newData = {
@@ -158,15 +164,15 @@ export const useUserStore = defineStore('user',{
     // ------------------------------------------------------------------------------
 
     /**
-     * Removes a master node from the user's watch list.
+     * Removes a masternode from the user's watch list.
      *
-     * identifier can be ownerAddress, operatorAddress or DeFiChain master node ID
+     * identifier can be ownerAddress, operatorAddress or DeFiChain masternode ID
      *
      * @param {String} identifier
      * */
     removeWatchedMasterNode(identifier) {
       if (!this.watchesMasterNode(identifier)) return
-      const index = this.watchedMasterNodes.findIndex(entry => entry.ownerAddress == identifier || entry.operatorAddress == identifier || entry.id == identifier)
+      const index = this.watchedMasterNodeIndex(identifier)
       if (index > -1) {
         this.watchedMasterNodes.splice(index, 1);
       }
@@ -175,14 +181,14 @@ export const useUserStore = defineStore('user',{
     // ------------------------------------------------------------------------------
 
     /**
-     * Sets a new name to a particular watched master node
+     * Sets a new name to a particular watched masternode
      *
      * @param {String} identifier
      * @param {String} newName
      */
     renameMasterNode(identifier, newName) {
       if (!this.watchesMasterNode(identifier)) return
-      const index = this.watchedMasterNodes.findIndex(entry => entry.ownerAddress == identifier || entry.operatorAddress == identifier || entry.id == identifier)
+      const index = this.watchedMasterNodeIndex(identifier)
       if (index > -1) {
         this.watchedMasterNodes[index].name = newName;
       }

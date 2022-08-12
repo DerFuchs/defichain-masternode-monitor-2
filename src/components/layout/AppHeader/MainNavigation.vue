@@ -102,8 +102,8 @@ const linksList = [
     to: "timeline",
   },
   {
-    title: "Manage Master Nodes",
-    caption: "your watched master nodes",
+    title: "Manage Masternodes",
+    caption: "your watched masternodes",
     icon: "fa-light fa-square-list",
     to: "manage-master-nodes",
   },

@@ -1,6 +1,6 @@
 <template>
   <q-page class="q-pa-md">
-    <div class="fit row items-stretch q-col-gutter-md">
+    <div class="row items-stretch q-col-gutter-md">
       <master-node-entry
         v-for="masterNode in user.watchedMasterNodes"
         :key="masterNode.ownerAddress"

@@ -1,7 +1,7 @@
 {
   "name": "defichain-masternode-monitor-2",
   "version": "0.0.1",
-  "description": "See what's going on with your DeFiChain Master Nodes",
+  "description": "See what's going on with your DeFiChain Masternodes",
   "productName": "DeFiChain Masternode Monitor 2",
   "author": "Michael Fuchs <michael@derfuchs.net>",
   "private": true,

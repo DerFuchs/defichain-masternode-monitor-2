@@ -26,6 +26,33 @@ export const useDeFiChainStore = defineStore('defichain',{
   },
 
   actions: {
+    /**
+     *
+     * @param {String} customOceanUrl
+     */
+    setCustomOceanUrl(customOceanUrl) {
+      if (customOceanUrl && customOceanUrl.length > 0) {
+        defichain.options.url = customOceanUrl.trim();
+      } else {
+        defichain.options.url = process.env.OCEAN_URL;
+      }
+    },
+
+    // ------------------------------------------------------------------------------
+
+    /**
+     *
+     * @param {String} networkName
+     */
+    setChainNetwork(networkName) {
+      if (networkName && networkName.length > 0) {
+        defichain.options.network = networkName;
+      } else {
+        defichain.options.network = process.env.OCEAN_NETWORK;
+      }
+    },
+
+    // ------------------------------------------------------------------------------
 
     /**
      *
@@ -38,8 +65,8 @@ export const useDeFiChainStore = defineStore('defichain',{
 
     /**
      *
-     * @param {*} state
-     * @returns
+     * @param {String} address
+     * @returns {Promise}
      */
     async masterNodeDetails(address) {
       const basicsStore = useBasicsStore()
@@ -52,7 +79,7 @@ export const useDeFiChainStore = defineStore('defichain',{
         || entry.id == address
 
       if (!this.hasKnownMasterNodeList || !this.allKnownMasterNodes.some(searchMasterNode())) {
-        // Fetch all Master Nodes when no MN is available
+        // Fetch all Masternodes when no MN is available
         await this.fetchAllKnownMasterNodes()
       }
 
@@ -60,8 +87,8 @@ export const useDeFiChainStore = defineStore('defichain',{
 
       basicsStore.setFetchingFinished(fetchingKey)
 
-      // Update this master node's data and return it
-      return await this.fetchMasterNodeData(masterNode.id)
+      // Update this masternode's data and return it
+      return await this.fetchMasterNodeData(masterNode?.id) || null
     },
 
     // ------------------------------------------------------------------------------
@@ -71,15 +98,21 @@ export const useDeFiChainStore = defineStore('defichain',{
      */
     async fetchMasterNodeData(id) {
       const index = this.allKnownMasterNodes.findIndex(entry => entry.id == id)
-      const masterNodeData = await defichain.masternodes.get(id)
+      try {
+        const masterNodeData = await defichain.masternodes.get(id)
 
-      if (index === -1) {
-        this.allKnownMasterNodes.push(masterNodeData)
-      } else {
-        this.allKnownMasterNodes[index] = masterNodeData
+        if (index === -1) {
+          this.allKnownMasterNodes.push(masterNodeData)
+        } else {
+          this.allKnownMasterNodes[index] = masterNodeData
+        }
+
+        return masterNodeData
+
+      } catch (error) {
+        useBasicsStore().addError(error.message, error)
+        return
       }
-
-      return masterNodeData
     },
 
     // ------------------------------------------------------------------------------
@@ -89,7 +122,7 @@ export const useDeFiChainStore = defineStore('defichain',{
      */
     async fetchAllKnownMasterNodes() {
       const basicsStore = useBasicsStore()
-      if (process.env.DEBUG) console.log('Fetching all known master nodes from DeFiChain')
+      if (process.env.DEBUG) console.log('Fetching all known masternodes from DeFiChain')
 
       // todo: Show message in UI that this process can take a while
       basicsStore.setFetching('masternode_list')
@@ -108,7 +141,7 @@ export const useDeFiChainStore = defineStore('defichain',{
       } finally {
         this.allKnownMasterNodes = masterNodeList
         basicsStore.setFetchingFinished('masternode_list')
-        if (process.env.DEBUG) console.log('finished fetching all known master nodes')
+        if (process.env.DEBUG) console.log('finished fetching all known masternodes')
       }
     },
 
@@ -128,7 +161,7 @@ export const useDeFiChainStore = defineStore('defichain',{
     /**
      * reads all transactions from a given DeFiChain address and extracts those who
      * belong to a block minting by filtering our impossible tx values and then
-     * compating the remaining blocks minters with the list of watches master nodes.
+     * compating the remaining blocks minters with the list of watches masternodes.
      *
      * TODO: Check only new/unkown TX ids which are not stored in the local cache
      *
@@ -136,7 +169,7 @@ export const useDeFiChainStore = defineStore('defichain',{
      */
     async fetchMasternodeMintings(address) {
       const basicsStore = useBasicsStore()
-      if (process.env.DEBUG) console.log('Fetching master node mintings for owner address: ' + address);
+      if (process.env.DEBUG) console.log('Fetching masternode mintings for owner address: ' + address);
       basicsStore.setFetching('mintings_' + address)
       try {
         const firstPage = await defichain.address.listTransaction(

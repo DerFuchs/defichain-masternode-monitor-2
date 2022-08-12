@@ -1,0 +1,37 @@
+<template>
+  <settings-card headline="Network">
+    <template #description> Switch between DeFiChain's networks. </template>
+    <q-radio v-model="network" val="mainnet" label="MainNet" />
+    <q-radio v-model="network" val="testnet" label="TestNet" />
+  </settings-card>
+</template>
+
+<script>
+import { defineComponent, toRef, watch } from "vue";
+import SettingsCard from "components/common/SettingsCard.vue";
+
+import { useUserStore } from "stores/user";
+import { useDeFiChainStore } from "src/stores/defichain";
+
+export default defineComponent({
+  name: "ChainNetwork",
+
+  components: { SettingsCard },
+
+  setup() {
+    const user = useUserStore();
+    const defichain = useDeFiChainStore();
+    const network = toRef(user.settings, "chainNetwork");
+
+    watch(network, (newNetworkName) => {
+      defichain.setChainNetwork(newNetworkName);
+    });
+
+    return {
+      user,
+      defichain,
+      network,
+    };
+  },
+});
+</script>

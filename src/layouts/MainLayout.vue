@@ -12,13 +12,7 @@
       <router-view />
     </q-page-container>
 
-    <!-- <q-footer class="bg-primary-dark text-white">
-      <q-toolbar>
-        <q-toolbar-title>
-          <div>Blockping</div>
-        </q-toolbar-title>
-      </q-toolbar>
-    </q-footer> -->
+    <app-footer />
   </q-layout>
 </template>
 
@@ -28,12 +22,14 @@ import { defineComponent, ref } from "vue";
 import { useBasicsStore } from "stores/basics";
 
 import AppHeader from "components/layout/AppHeader.vue";
+import AppFooter from "components/layout/AppFooter.vue";
 
 export default defineComponent({
   name: "MainLayout",
 
   components: {
     AppHeader,
+    AppFooter,
   },
 
   setup() {

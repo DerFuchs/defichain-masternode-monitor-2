@@ -4,12 +4,41 @@
       class="full-width full-height"
       :class="{ 'bg-grey-2': basics.darkMode === false }"
     >
-      <q-card-section class="text-h6 q-py-sm"> Add Master Node </q-card-section>
+      <q-card-section class="q-px-none q-py-none">
+        <q-expansion-item
+          class="q-pa-none q-ma-none"
+          expand-icon="fa-light fa-circle-question"
+        >
+          <template #header>
+            <q-item-section class="q-pa-none q-ma-none">
+              <div class="text-h6">Add Masternode</div>
+            </q-item-section>
+          </template>
+
+          <q-card :class="{ 'bg-grey-2': basics.darkMode === false }">
+            <q-card-section>
+              <p>
+                This is a list of your watched masternodes. You can add more, or remove
+                old ones. This will not and cannot manipulate your masternodes.
+              </p>
+              <p>
+                Masternode Monitor also supports removed masternodes. If you regularly
+                resign old and spin up new ones later, you can track them all to see a
+                history.
+              </p>
+              <p>
+                To add another masternode to your list, just paste in its owner address,
+                operator address or masternode id and give it a name if you like.
+              </p>
+            </q-card-section>
+          </q-card>
+        </q-expansion-item>
+      </q-card-section>
 
       <q-separator :class="{ 'light-gradient': user.settings.colorfulMode }" />
 
       <q-card-section>
-        <!-- INPUT: master node name -->
+        <!-- INPUT: masternode name -->
         <q-input
           v-model="newMasterNodeName"
           :label="$t('manageMasterNodes.masterNodeNameInput')"
@@ -20,7 +49,7 @@
           </template>
         </q-input>
 
-        <!-- INPUT: master node address -->
+        <!-- INPUT: masternode address -->
         <q-input
           v-model="newMasterNodeAddress"
           :label="$t('manageMasterNodes.addressInput')"
@@ -48,13 +77,12 @@
               <q-icon name="fa-light fa-circle-plus" class="q-mr-xs" />
               {{ $t("manageMasterNodes.addBtnLabel", { name: addButtonLabel }) }}
             </span>
-            <span v-else>you already watch this master node</span>
+            <span v-else>you already watch this masternode</span>
           </div>
         </q-btn>
       </q-card-section>
       <q-card-section class="q-pt-none text-caption text-grey-8">
-        Master Node Monitor will have to fetch all available Master Nodes from
-        DeFiChain.<br />
+        Masternode Monitor will have to fetch all available Masternodes from DeFiChain.
         This includes roughly ~15 Megabytes of data and will take some time, depending on
         the speed of your internet connection.
       </q-card-section>

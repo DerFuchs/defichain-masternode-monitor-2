@@ -14,6 +14,9 @@
         <q-toolbar-title>Unread Messages</q-toolbar-title>
       </q-toolbar>
       <q-list class="q-mt-sm">
+        <q-item v-if="unreadMessagesCount == 0">
+          <q-item-section side top> You don't have any unread messages </q-item-section>
+        </q-item>
         <message-entry
           v-for="(message, index) in unreadMessages"
           :key="index"

@@ -1,7 +1,7 @@
 <template>
   <router-view />
 
-  <q-dialog :model-value="basics.hasUnreadErrors" position="bottom">
+  <!-- <q-dialog :model-value="basics.hasUnreadErrors" position="bottom">
     <q-card square>
       <q-card-section class="row items-center no-wrap">
         <q-list>
@@ -11,7 +11,7 @@
         </q-list>
       </q-card-section>
     </q-card>
-  </q-dialog>
+  </q-dialog> -->
 </template>
 
 <script>

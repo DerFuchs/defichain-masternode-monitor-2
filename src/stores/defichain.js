@@ -110,7 +110,7 @@ export const useDeFiChainStore = defineStore('defichain',{
         return masterNodeData
 
       } catch (error) {
-        useBasicsStore().addError(error.message, error)
+        useBasicsStore().addError(error.message, 'Unable to fetch masternode data from DeFiChain', error)
         return
       }
     },

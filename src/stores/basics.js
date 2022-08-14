@@ -10,7 +10,7 @@ export const useBasicsStore = defineStore('basics',
     version: '200',
     fetchingDataList: [],
     processing: [],
-    errors: [
+    messages: [
       {
         message: 'This is a Test',
         raw: null,
@@ -37,9 +37,13 @@ export const useBasicsStore = defineStore('basics',
 
     darkMode: () => useQuasar().dark.isActive,
 
-    hasUnreadErrors: state => state.errors.some(entry => entry.read == false),
+    hasUnreadMessages: state => state.messages.some(entry => entry.read == false),
 
-    unreadErrors: state => state.errors.filter(entry => entry.read == false)
+    unreadMessages: state => state.messages.filter(entry => entry.read == false),
+
+    hasUnreadErrors: state => state.messages.some(entry => entry.read == false && entry.type == "error"),
+
+    unreadErrors: state => state.messages.filter(entry => entry.read == false && entry.type == "error")
   },
 
   actions: {
@@ -66,13 +70,21 @@ export const useBasicsStore = defineStore('basics',
       }
     },
 
-    addError(message, rawObject = null) {
-      this.errors.push({
+    addError(message, headline = null, rawObject = null) {
+      this.messages.push({
+        // uuid
+        id: ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c => (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)),
+        type: 'error',
+        headline: headline,
         message: message,
         raw: rawObject,
         read: false,
       })
-    }
+    },
+
+    setMessageRead(id) {
+      this.messages.find(entry => entry.id == id).read = true
+    },
 
   },
 })

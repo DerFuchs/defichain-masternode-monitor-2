@@ -7,11 +7,11 @@
     <q-card>
       <q-card-section class="row q-pa-none">
         <div
-          class="col-6 text-center bg-white q-pa-md q-pt-lg"
+          class="col-6 text-center bg-grey-2 q-pa-md q-pt-lg"
           style="cursor: pointer"
           @click="setting = false"
         >
-          <q-icon name="fa-light fa-starfighter" size="lg" color="accent" />
+          <q-icon name="fa-light fa-starfighter" size="lg" color="dark" />
           <p class="q-mt-md q-mb-none">
             <q-radio v-model="setting" :val="false" :dark="false" color="accent" />
           </p>
@@ -25,14 +25,14 @@
         </div>
         -->
         <div
-          class="col-6 text-center bg-black q-pa-md q-pt-lg"
+          class="col-6 text-center bg-dark q-pa-md q-pt-lg"
           style="cursor: pointer"
           @click="setting = true"
         >
           <q-icon
             name="fa-light fa-starfighter-twin-ion-engine"
             size="lg"
-            color="accent"
+            color="grey-2"
           />
           <p class="q-mt-md q-mb-none">
             <q-radio v-model="setting" :val="true" :dark="true" color="accent" />

@@ -83,12 +83,26 @@
       </q-card-section>
       <q-card-section class="q-pt-none text-caption text-grey-8">
         Masternode Monitor will have to fetch all available Masternodes from DeFiChain.
-        This includes roughly ~15 Megabytes of data and will take some time, depending on
+        This includes roughly ~10 Megabytes of data and will take some time, depending on
         the speed of your internet connection.
       </q-card-section>
 
-      <q-inner-loading :showing="basics.isProcessing('add_watched_master_node')">
+      <q-inner-loading
+        :showing="basics.isProcessing('add_watched_master_node')"
+        class="q-pa-xl text-center bg-blur"
+      >
         <q-spinner-puff size="50px" color="primary" />
+        <p v-if="basics.isFetching('masternode_list')">
+          Asking DeFiChain for a complete list of all masternodes ever existed (~10 MB)
+        </p>
+        <p
+          v-if="
+            basics.isFetching('masternode_details') &&
+            !basics.isFetching('masternode_list')
+          "
+        >
+          Asking DeFiChain for this masternode's details &amp; mintings
+        </p>
       </q-inner-loading>
     </q-card>
   </div>

@@ -4,10 +4,9 @@
     :card-sizes="{ xs: 6, sm: 3, md: 4, lg: 3, xl: 2 }"
   >
     <template #description>
-      The total number of Transactions your masternodes have secured withing the
+      The total number of Transactions your masternodes have secured within the
       {{ mintingsCount }} blocks they have minted.
     </template>
-    TX
     <span class="text-h2 text-primary">
       {{ txCount.toLocaleString() }}
     </span>

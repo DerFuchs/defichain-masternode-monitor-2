@@ -46,7 +46,7 @@
         <slot></slot>
       </q-card-section>
 
-      <q-inner-loading :showing="isWorking">
+      <q-inner-loading :showing="isWorking" class="bg-blur">
         <q-spinner-puff size="50px" color="primary" />
       </q-inner-loading>
     </q-card>

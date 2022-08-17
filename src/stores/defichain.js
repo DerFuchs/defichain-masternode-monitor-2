@@ -117,7 +117,7 @@ export const useDeFiChainStore = defineStore('defichain', {
      */
     async fetchMasterNodeData(id) {
       const index = this.allKnownMasterNodes.findIndex(entry => entry.id == id)
-      //try {
+      try {
         const masterNodeData = await defichain.masternodes.get(id)
 
         masterNodeData.mintings = await this.fetchMasternodeMintings(masterNodeData.owner.address, masterNodeData.operator.address)
@@ -130,10 +130,10 @@ export const useDeFiChainStore = defineStore('defichain', {
 
         return masterNodeData
 
-      // } catch (error) {
-      //   useBasicsStore().addError(error.message, 'Unable to fetch masternode data from DeFiChain', error)
-      //   return
-      // }
+      } catch (error) {
+        useBasicsStore().addError(error.message, 'Unable to fetch masternode data from DeFiChain', error)
+        return
+      }
     },
 
     // ------------------------------------------------------------------------------

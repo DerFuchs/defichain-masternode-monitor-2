@@ -10,7 +10,7 @@ export const useUserStore = defineStore('user',{
       chainNetwork: process.env.OCEAN_NETWORK,
       customOceanUrl: null,
       darkMode: 'auto',
-      colorfulMode: false,
+      colorfulMode: true,
     },
 
     watchedMasterNodesEntryDefaults: {

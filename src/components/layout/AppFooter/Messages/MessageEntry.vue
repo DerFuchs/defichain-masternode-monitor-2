@@ -4,7 +4,9 @@
       <q-item-label :class="{ 'text-negative': message.type == 'error' }">
         <q-icon name="fa-light fa-bug" class="q-mr-xs" />{{ message.headline }}
       </q-item-label>
-      <q-item-label caption :lines="lines">{{ message.message }}</q-item-label>
+      <q-item-label caption :lines="lines" style="overflow-wrap: break-word">{{
+        message.message
+      }}</q-item-label>
     </q-item-section>
 
     <q-item-section side top>

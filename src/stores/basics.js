@@ -9,30 +9,38 @@ export const useBasicsStore = defineStore('basics',
   state: () => ({
     version: '200',
     fetchingDataList: [],
-    processing: [],
-    messages: [
-      {
-        message: 'This is a Test',
-        raw: null,
-        read: false,
+    processingDataList: [],
+    lastRefresh: new Date(),
+    messages: [],
+    formatting: {
+      currency: {
+        dfi: { style: 'currency', currency: 'DFI' },
+        dfiNoSymbol: { minimumFractionDigits: 2, maximumFractionDigits: 2 },
       }
-    ],
+    }
   }),
 
   persistedState: {
     key: 'mamon-basics',
+    excludePaths: [
+      'fetchingDataList',
+      'processingDataList',
+    ]
   },
 
   getters: {
+    // Fetching
     fetching: state => state.fetchingDataList.length > 0,
-    fetchingMintingsCount: state => {
-      return state.fetchingDataList.filter(entry => entry.startsWith('mintings_'))
-    },
     isFetching: state => key => state.fetchingDataList.some(entry => entry.startsWith(key)),
+    fetchingMintingsCount: state => {
+      return state.fetchingDataList.filter(entry => entry.startsWith('mintings_')).length
+    },
 
+    // Processing
+    processing: state => state.processingDataList.length > 0,
     isProcessing: state => (key) => {
-      if (key == null) return state.processing.length > 0
-      else return state.processing.some(entry => entry.startsWith(key))
+      if (key == null) return state.processingDataList.length > 0
+      else return state.processingDataList.some(entry => entry.startsWith(key))
     },
 
     darkMode: () => useQuasar().dark.isActive,
@@ -60,13 +68,13 @@ export const useBasicsStore = defineStore('basics',
     },
 
     setProcessing(key) {
-      this.processing.push(key)
+      this.processingDataList.push(key)
     },
 
     setProcessingFinished(key) {
-      var index = this.processing.indexOf(key)
+      var index = this.processingDataList.indexOf(key)
       if (index > -1) {
-        this.processing.splice(index, 1)
+        this.processingDataList.splice(index, 1)
       }
     },
 
@@ -79,6 +87,7 @@ export const useBasicsStore = defineStore('basics',
         message: message,
         raw: rawObject,
         read: false,
+        time: new Date(),
       })
     },
 

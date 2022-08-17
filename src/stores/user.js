@@ -1,14 +1,12 @@
 import { defineStore } from 'pinia';
 import { useDeFiChainStore } from "stores/defichain";
 import { useBasicsStore } from "stores/basics";
-import { iterate } from 'localforage';
 
 export const useUserStore = defineStore('user',{
   state: () => ({
     userId: '',
     watchedMasterNodes: [],
     settings: {
-      // chainNetwork: 'mainnet',
       chainNetwork: process.env.OCEAN_NETWORK,
       customOceanUrl: null,
       darkMode: 'auto',
@@ -33,6 +31,9 @@ export const useUserStore = defineStore('user',{
 
   // --------------------------------------------------------------------------------
 
+  /**
+   * Handles data persistance in IndexedDB
+   */
   persistedState: {
     key: 'mamon-user',
   },
@@ -59,7 +60,7 @@ export const useUserStore = defineStore('user',{
 
     /**
      * Checks if provided DeFiChain address is available in the user's masternode
-     * list, no matter if it is an onwer address or an operator address.
+     * list, no matter if it is an onwer address or an operator address or an MN id
      *
      * @param {String} identifier
      * @returns Boolean
@@ -68,13 +69,26 @@ export const useUserStore = defineStore('user',{
 
     /**
      * Delivers only watches masternodes which are NOT resigned
+     *
+     * @returns Array of Objects
      */
     watchedActiveMasterNodes: state => state.watchedMasterNodes.filter(entry => entry.state != 'RESIGNED'),
 
     /**
      * Returns the array index of the given masternode identifier
+     *
+     * @returns  Integer
      */
-    watchedMasterNodeIndex: state => identifier => state.watchedMasterNodes.findIndex(entry => entry.ownerAddress == identifier || entry.operatorAddress == identifier || entry.id == identifier)
+    watchedMasterNodeIndex: state => identifier => state.watchedMasterNodes.findIndex(entry => entry.ownerAddress == identifier || entry.operatorAddress == identifier || entry.id == identifier),
+
+    totalBlockProperty: state => blockKey => state.watchedMasterNodes.reduce(
+      (total, masternode) =>
+        masternode.mintedBlocks.reduce(
+          (subTotal, minting) => parseFloat(minting[blockKey]) + subTotal,
+          0
+        ) + total,
+      0
+    ),
 
   },
 
@@ -126,20 +140,32 @@ export const useUserStore = defineStore('user',{
 
     // ------------------------------------------------------------------------------
 
-    fetchWatchedMasterNodesData() {
+    /**
+     * Reloads the data of all watched master nodes
+     */
+    async fetchWatchedMasterNodesData() {
       const defichain = useDeFiChainStore()
 
-      this.watchedMasterNodes.forEach((entry) => {
-        defichain.masterNodeDetails(entry.id).then((masterNodeDetails) => {
-          this.updateWatchedMasterNodeData(masterNodeDetails)
+      await Promise.all(
+        this.watchedMasterNodes.map(async (entry) => {
+          await defichain.masterNodeDetails(entry.id).then((masterNodeDetails) => {
+            this.updateWatchedMasterNodeData(masterNodeDetails)
+          })
         })
-      })
+      );
     },
 
     // ------------------------------------------------------------------------------
 
+    /**
+     * Receives raw master node data and transforms it into master node monitor's
+     * internal data structure.
+     *
+     * @param {Object} rawMasterNodeData
+     * @returns
+     */
     updateWatchedMasterNodeData(rawMasterNodeData) {
-      const index = this.watchedMasterNodeIndex(rawMasterNodeData.id)
+      const index = this.watchedMasterNodeIndex(rawMasterNodeData?.id)
       if (index === -1) return
 
       const newData = {
@@ -148,10 +174,11 @@ export const useUserStore = defineStore('user',{
         operatorAddress: rawMasterNodeData.operator.address,
         creationBlock: rawMasterNodeData.creation.height,
         resignBlock: rawMasterNodeData.resign?.height ?? 0,
+        mintedBlocks: rawMasterNodeData.mintings,
         mintedBlocksCount: rawMasterNodeData.mintedBlocks,
         state: rawMasterNodeData.state,
         timelock: rawMasterNodeData.timelock,
-        raw: rawMasterNodeData,
+        //raw: rawMasterNodeData,
       }
 
       this.watchedMasterNodes[index] = {

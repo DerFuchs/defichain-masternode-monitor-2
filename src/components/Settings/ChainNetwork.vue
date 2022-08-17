@@ -1,8 +1,8 @@
 <template>
   <settings-card headline="Network">
     <template #description> Switch between DeFiChain's networks. </template>
-    <q-radio v-model="network" val="mainnet" label="MainNet" />
-    <q-radio v-model="network" val="testnet" label="TestNet" />
+    <q-radio v-model="network" val="mainnet" label="MainNet" color="accent" />
+    <q-radio v-model="network" val="testnet" label="TestNet" color="secondary" />
   </settings-card>
 </template>
 

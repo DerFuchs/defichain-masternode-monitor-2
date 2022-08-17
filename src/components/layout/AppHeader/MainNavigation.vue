@@ -77,14 +77,27 @@
         class="q-my-sm"
         :class="{ 'light-gradient': user.settings.colorfulMode }"
       />
+
+      <q-item class="absolute-bottom">
+        <q-item-section>
+          <p class="q-my-none">Version: {{ basics.version }}</p>
+          <p>
+            Last Refresh:
+            {{ lastRefreshAgo }}
+          </p>
+        </q-item-section>
+      </q-item>
     </q-list>
   </q-drawer>
 </template>
 
 <script>
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, onMounted } from "vue";
 
+import { useBasicsStore } from "stores/basics";
 import { useUserStore } from "stores/user";
+
+import { DateTime } from "luxon";
 
 import NaviEntry from "components/layout/AppHeader/MainNavigation/NaviEntry.vue";
 
@@ -117,10 +130,23 @@ export default defineComponent({
   },
 
   setup() {
+    const basics = useBasicsStore();
+    //const lastRefreshAgo = ref(DateTime.fromISO(basics.lastRefresh).toRelative());
+
+    const lastRefreshAgo = ref(DateTime.fromISO(basics.lastRefresh).toRelative());
+
+    onMounted(() => {
+      const refreshTimer = setInterval(() => {
+        lastRefreshAgo.value = DateTime.fromISO(basics.lastRefresh).toRelative();
+      }, 10000);
+    });
+
     return {
+      basics,
       user: useUserStore(),
       linksList,
       privacy: ref(true),
+      lastRefreshAgo,
     };
   },
 });

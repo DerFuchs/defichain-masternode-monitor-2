@@ -16,7 +16,7 @@
   </settings-card>
 -->
 <template>
-  <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+  <div :class="colWidths">
     <q-card
       class="full-width full-height"
       :class="{ 'bg-grey-2': basics.darkMode === false }"
@@ -45,30 +45,54 @@
       <q-card-section>
         <slot></slot>
       </q-card-section>
+
+      <q-inner-loading :showing="isWorking">
+        <q-spinner-puff size="50px" color="primary" />
+      </q-inner-loading>
     </q-card>
   </div>
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { defineComponent, computed } from "vue";
 
 import { useBasicsStore } from "stores/basics";
 import { useUserStore } from "stores/user";
 
 export default defineComponent({
-  name: "SettingsCard",
+  name: "DashboardCard",
 
   props: {
     headline: {
       type: String,
       required: true,
     },
+    cardSizes: {
+      type: Object,
+      required: false,
+      default(rawProps) {
+        return {
+          xs: 12,
+          sm: 6,
+          md: 4,
+          lg: 3,
+          xl: 2,
+        };
+      },
+    },
   },
 
-  setup() {
+  setup(props) {
+    const basics = useBasicsStore();
+
     return {
-      basics: useBasicsStore(),
+      basics,
       user: useUserStore(),
+      colWidths: computed(
+        () =>
+          `col-xs-${props.cardSizes.xs} col-sm-${props.cardSizes.sm} col-md-${props.cardSizes.md} col-lg-${props.cardSizes.lg} col-xl-${props.cardSizes.xl}`
+      ),
+      isWorking: computed(() => basics.isFetching() || basics.isProcessing()),
     };
   },
 });

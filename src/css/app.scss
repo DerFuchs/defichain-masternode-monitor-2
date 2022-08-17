@@ -32,3 +32,30 @@
     hsl(183deg 100% 50%) 100%
   ) !important;
 }
+
+.light-gradient-border {
+  background: linear-gradient($dark, $dark) padding-box,
+    linear-gradient(
+        25deg,
+        hsl(320deg 100% 40%) 5%,
+        hsl(309deg 100% 45%) 15%,
+        hsl(276deg 100% 46%) 64%,
+        hsl(203deg 100% 50%) 81%,
+        hsl(183deg 100% 50%) 100%
+      )
+      border-box;
+  border: 1px solid transparent;
+  /*
+  border: 10px solid;
+  border-image-slice: 1;
+  border-width: 1px;
+  border-image-source: linear-gradient(
+    25deg,
+    hsl(320deg 100% 40%) 5%,
+    hsl(309deg 100% 45%) 15%,
+    hsl(276deg 100% 46%) 64%,
+    hsl(203deg 100% 50%) 81%,
+    hsl(183deg 100% 50%) 100%
+  ) !important;
+  */
+}

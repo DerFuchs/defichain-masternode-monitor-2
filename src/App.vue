@@ -45,6 +45,7 @@ export default defineComponent({
           deFiChain.fetchRewardDistribution();
           deFiChain.cleanupAllKnownMasterNodes();
           user.fetchWatchedMasterNodesData();
+          basics.lastRefresh = new Date().toISOString();
         })
         .then(() => {
           if (process.env.DEBUG)

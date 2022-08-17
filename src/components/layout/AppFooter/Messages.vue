@@ -8,14 +8,15 @@
       fit
       transition-show="jump-up"
       transition-hide="jump-down"
-      max-width="375px"
+      max-width="350px"
+      class="messagesMenu"
     >
       <q-toolbar class="bg-primary-dark text-white">
         <q-toolbar-title>Unread Messages</q-toolbar-title>
       </q-toolbar>
       <q-list class="q-mt-sm">
-        <q-item v-if="unreadMessagesCount == 0">
-          <q-item-section side top> You don't have any unread messages </q-item-section>
+        <q-item v-if="unreadMessagesCount == 0" caption style="min-width: 320px">
+          <q-item-section>You don't have any unread messages</q-item-section>
         </q-item>
         <message-entry
           v-for="(message, index) in unreadMessages"
@@ -57,8 +58,6 @@ export default defineComponent({
     });
 
     watch(unreadMessagesCount, () => {
-      console.log("test");
-      console.log(messagesMenu);
       messagesMenu.value.updatePosition();
       messagesMenu.value.toggle();
       messagesMenu.value.toggle();

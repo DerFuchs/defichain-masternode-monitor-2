@@ -211,9 +211,11 @@ export const useDeFiChainStore = defineStore('defichain', {
         } while (nextPage.length > 0)
       } finally {
         // wait until the details of all transactions have been fetched
+        const blockTmp = []
         await Promise.all(
           txList.map(async (tx) => {
             // use locally stored block data to avoid calling Ocean
+
             if (this.blockKnown(tx.block.hash)) {
               const block = this.block(tx.block.hash)
               if (block.minter == operatorAddress) {
@@ -221,6 +223,7 @@ export const useDeFiChainStore = defineStore('defichain', {
               }
               return
             }
+
 
             /**
              * Remove TX which are definetly no mintings.
@@ -238,7 +241,10 @@ export const useDeFiChainStore = defineStore('defichain', {
 
             const block = await defichain.blocks.get(tx.block.hash)
 
-            this.allKnownBlocks.push(block)
+            console.log("pushing Block", block.id)
+            //this.allKnownBlocks.push(block)
+            blockTmp.push(block)
+            console.log("pushed Block", block.id)
 
             if (block.minter == operatorAddress) {
               blocks.push(block)
@@ -246,6 +252,7 @@ export const useDeFiChainStore = defineStore('defichain', {
 
           })
         );
+        this.allKnownBlocks = [...this.allKnownBlocks, ...blockTmp]
 
         basicsStore.setFetchingFinished('mintings_' + address)
         if (process.env.DEBUG) console.log('finished fetching ' + address)

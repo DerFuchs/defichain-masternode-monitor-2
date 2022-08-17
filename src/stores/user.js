@@ -105,16 +105,16 @@ export const useUserStore = defineStore('user',{
     async addWatchedMasterNode(identifier, name = '') {
       if (this.watchesMasterNode(identifier)) return
 
-      const basicsStore = useBasicsStore()
+      const basics = useBasicsStore()
       const defichain = useDeFiChainStore()
       const processingKey = 'add_watched_master_node_' + identifier
 
-      basicsStore.setProcessing(processingKey)
+      basics.setProcessing(processingKey)
 
       const masterNodeDetails = await defichain.masterNodeDetails(identifier)
 
       if (!masterNodeDetails) {
-        basicsStore.setProcessingFinished(processingKey)
+        basics.setProcessingFinished(processingKey)
         return
       }
 
@@ -131,11 +131,11 @@ export const useUserStore = defineStore('user',{
           mintedBlocksCount: masterNodeDetails.mintedBlocks,
           state: masterNodeDetails.state,
           timelock: masterNodeDetails.timelock,
-          raw: masterNodeDetails,
+          //raw: masterNodeDetails,
         },
       })
 
-      basicsStore.setProcessingFinished(processingKey)
+      basics.setProcessingFinished(processingKey)
     },
 
     // ------------------------------------------------------------------------------

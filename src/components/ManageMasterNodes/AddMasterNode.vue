@@ -75,7 +75,7 @@
           <div class="ellipsis">
             <span v-if="!user.watchesMasterNode(newMasterNodeAddress)">
               <q-icon name="fa-light fa-circle-plus" class="q-mr-xs" />
-              {{ $t("manageMasterNodes.addBtnLabel", { name: addButtonLabel }) }}
+              add {{ addButtonLabel }}
             </span>
             <span v-else>you already watch this masternode</span>
           </div>

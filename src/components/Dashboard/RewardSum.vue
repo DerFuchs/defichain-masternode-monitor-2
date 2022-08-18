@@ -7,11 +7,13 @@
       The total number of DFI your masternodes have received as rewards for the
       {{ mintingsCount }} blocks they have minted.
     </template>
-    DFI
-    <span class="text-h2 text-primary">
-      {{ totalDfi.toLocaleString({}, basics.formatting.currency.dfiNoSymbol) }}
-    </span>
-    <br />
+    <q-card-section>
+      DFI
+      <span class="text-h2 text-primary">
+        {{ totalDfi.toLocaleString({}, basics.formatting.currency.dfiNoSymbol) }}
+      </span>
+    </q-card-section>
+    <q-card-section> tx fees </q-card-section>
   </dashboard-card>
 </template>
 

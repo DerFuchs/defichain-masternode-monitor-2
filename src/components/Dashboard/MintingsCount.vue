@@ -7,7 +7,9 @@
       The total number of blocks all your masternodes have been minting since the first
       one came to life.
     </template>
-    <div class="text-h2 text-primary">{{ mintingsCount }}</div>
+    <q-card-section class="text-h2 text-primary">
+      {{ mintingsCount }}
+    </q-card-section>
   </dashboard-card>
 </template>
 

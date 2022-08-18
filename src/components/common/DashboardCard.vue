@@ -42,9 +42,7 @@
 
       <q-separator :class="{ 'light-gradient': user.settings.colorfulMode }" />
 
-      <q-card-section>
-        <slot></slot>
-      </q-card-section>
+      <slot></slot>
 
       <q-inner-loading :showing="isWorking" class="bg-blur">
         <q-spinner-puff size="50px" color="primary" />

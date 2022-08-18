@@ -120,7 +120,7 @@ export const useDeFiChainStore = defineStore('defichain', {
       try {
         const masterNodeData = await defichain.masternodes.get(id)
 
-        masterNodeData.mintings = await this.fetchMasternodeMintings(masterNodeData.owner.address, masterNodeData.operator.address)
+        masterNodeData.mintings = await this.fetchMasternodeMintings(masterNodeData.owner.address, masterNodeData.id)
 
         if (index === -1) {
           this.allKnownMasterNodes.push(masterNodeData)
@@ -188,10 +188,10 @@ export const useDeFiChainStore = defineStore('defichain', {
      *
      * @param {String} address
      */
-    async fetchMasternodeMintings(address, operatorAddress) {
+    async fetchMasternodeMintings(address, masternodeId) {
       const basicsStore = useBasicsStore()
       const blocks = []
-      if (process.env.DEBUG) console.log('Fetching masternode mintings for owner address: ' + address);
+      if (process.env.DEBUG) console.log('Fetching masternode mintings for owner address:', address);
       basicsStore.setFetching('mintings_' + address)
 
       let txList = [];
@@ -211,14 +211,14 @@ export const useDeFiChainStore = defineStore('defichain', {
         } while (nextPage.length > 0)
       } finally {
         // wait until the details of all transactions have been fetched
-        const blockTmp = []
+        const knownBlocksTmp = []
         await Promise.all(
           txList.map(async (tx) => {
             // use locally stored block data to avoid calling Ocean
 
             if (this.blockKnown(tx.block.hash)) {
               const block = this.block(tx.block.hash)
-              if (block.minter == operatorAddress) {
+              if (block.masternode == masternodeId) {
                 blocks.push(block)
               }
               return
@@ -233,7 +233,7 @@ export const useDeFiChainStore = defineStore('defichain', {
              * must be less than 20,000 DFI and more than the current block reward.
              *
              * Filtering for this should do the trick to drastically reduce the number
-             * of transactions to take a look at the right minter's address.
+             * of transactions to take a look at the right masternode id.
              */
             if (tx.type != "vout" || tx.value >= 20_000 || tx.value < this.currentStakingReward) {
               return
@@ -241,21 +241,18 @@ export const useDeFiChainStore = defineStore('defichain', {
 
             const block = await defichain.blocks.get(tx.block.hash)
 
-            console.log("pushing Block", block.id)
-            //this.allKnownBlocks.push(block)
-            blockTmp.push(block)
-            console.log("pushed Block", block.id)
+            knownBlocksTmp.push(block)
 
-            if (block.minter == operatorAddress) {
+            if (block.masternode == masternodeId) {
               blocks.push(block)
             }
 
           })
         );
-        this.allKnownBlocks = [...this.allKnownBlocks, ...blockTmp]
+        this.allKnownBlocks = [...this.allKnownBlocks, ...knownBlocksTmp]
 
         basicsStore.setFetchingFinished('mintings_' + address)
-        if (process.env.DEBUG) console.log('finished fetching ' + address)
+        if (process.env.DEBUG) console.log('finished fetching ', address)
 
         return blocks
       }

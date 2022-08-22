@@ -26,9 +26,9 @@ export default defineComponent({
       masterNodeName: (mnData) => {
         return mnData.name.length > 0
           ? mnData.name
-          : mnData.ownerAddress.substring(0, 5) +
+          : mnData.ownerAddress.substring(0, 3) +
               "…" +
-              mnData.ownerAddress.substr(mnData.ownerAddress.length - 5);
+              mnData.ownerAddress.substr(mnData.ownerAddress.length - 3);
       },
     };
   },

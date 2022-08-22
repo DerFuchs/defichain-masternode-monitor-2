@@ -7,15 +7,19 @@
         :data="masterNode"
       />
       <add-master-node />
+      <export-qr-code />
     </div>
   </q-page>
 </template>
 
 <script>
 import { defineComponent } from "vue";
+
+import { useUserStore } from "stores/user";
+
 import MasterNodeEntry from "components/ManageMasterNodes/MasterNodeEntry.vue";
 import AddMasterNode from "components/ManageMasterNodes/AddMasterNode.vue";
-import { useUserStore } from "stores/user";
+import ExportQrCode from "components/ManageMasterNodes/ExportQrCode.vue";
 
 export default defineComponent({
   name: "ManageMasterNodes",
@@ -23,6 +27,7 @@ export default defineComponent({
   components: {
     MasterNodeEntry,
     AddMasterNode,
+    ExportQrCode,
   },
 
   setup() {

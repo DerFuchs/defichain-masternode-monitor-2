@@ -16,6 +16,7 @@ export const useDeFiChainStore = defineStore('defichain', {
       options: 0,
       unallocated: 0,
     },
+    prices: {},
   }),
 
   persistedState: {
@@ -45,7 +46,9 @@ export const useDeFiChainStore = defineStore('defichain', {
 
     block: state => blockHash => {
       return state.allKnownBlocks.find(block => block.hash == blockHash)
-    }
+    },
+
+    price: state => token => state.prices[token] ?? false,
   },
 
   actions: {
@@ -83,6 +86,18 @@ export const useDeFiChainStore = defineStore('defichain', {
     async fetchRewardDistribution() {
       this.rewardDistribution = await defichain.stats.getRewardDistribution()
     },
+
+    // ------------------------------------------------------------------------------
+
+    /**
+     *
+     */
+    async fetchPrices() {
+      return await defichain.prices.get('DFI', 'USD').then(result => {
+        this.prices[result.id] = result?.price?.aggregated?.amount
+      })
+    },
+
 
     // ------------------------------------------------------------------------------
 
@@ -215,7 +230,6 @@ export const useDeFiChainStore = defineStore('defichain', {
         await Promise.all(
           txList.map(async (tx) => {
             // use locally stored block data to avoid calling Ocean
-
             if (this.blockKnown(tx.block.hash)) {
               const block = this.block(tx.block.hash)
               if (block.masternode == masternodeId) {

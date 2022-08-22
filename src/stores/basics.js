@@ -14,6 +14,7 @@ export const useBasicsStore = defineStore('basics',
     messages: [],
     formatting: {
       currency: {
+        usd: { style: 'currency', currency: 'USD' },
         dfi: { style: 'currency', currency: 'DFI' },
         dfiNoSymbol: { minimumFractionDigits: 2, maximumFractionDigits: 2 },
       }
@@ -25,6 +26,9 @@ export const useBasicsStore = defineStore('basics',
     excludePaths: [
       'fetchingDataList',
       'processingDataList',
+      'formatting',
+      'lastRefresh',
+      'version',
     ]
   },
 

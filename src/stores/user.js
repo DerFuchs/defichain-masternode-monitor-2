@@ -11,6 +11,7 @@ export const useUserStore = defineStore('user',{
       customOceanUrl: null,
       darkMode: 'auto',
       colorfulMode: true,
+      dashboard: {}
     },
 
     watchedMasterNodesEntryDefaults: {

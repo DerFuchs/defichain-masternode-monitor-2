@@ -43,6 +43,7 @@ export default defineComponent({
           deFiChain.setChainNetwork(user.settings.chainNetwork);
 
           deFiChain.fetchRewardDistribution();
+          deFiChain.fetchPrices();
           deFiChain.cleanupAllKnownMasterNodes();
           user.fetchWatchedMasterNodesData();
           basics.lastRefresh = new Date().toISOString();

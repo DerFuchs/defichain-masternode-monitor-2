@@ -24,7 +24,7 @@
       <q-card-section class="q-px-none q-py-none">
         <q-expansion-item
           class="q-pa-none q-ma-none"
-          expand-icon="fa-light fa-circle-question"
+          expand-icon="fa-light fa-ellipsis-vertical"
         >
           <template #header>
             <q-item-section class="q-pa-none q-ma-none">
@@ -33,8 +33,19 @@
           </template>
 
           <q-card :class="{ 'bg-grey-2': basics.darkMode === false }">
-            <q-card-section>
+            <q-card-section v-if="$slots.description">
               <slot name="description"></slot>
+            </q-card-section>
+            <q-separator
+              v-if="$slots.settings"
+              inset
+              :class="{ 'light-gradient': user.settings.colorfulMode }"
+            />
+            <q-card-section v-if="$slots.settings" class="q-px-none q-py-none">
+              <q-list>
+                <q-item-label header>Settings</q-item-label>
+                <slot name="settings"></slot>
+              </q-list>
             </q-card-section>
           </q-card>
         </q-expansion-item>

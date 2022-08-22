@@ -290,13 +290,15 @@ export default defineComponent({
   object-fit: contain
 
 .square
-  width: 100% !important
-  height: 0 !important
-  padding-top: 100% !important
+  width: 100%
+  height: 0
+  padding-top: 100%
   position: relative
 
   .content
     position: absolute
+    width: 100%
+    height: 100%
     max-height: 80vh
     max-width: 80vh
     top: 0

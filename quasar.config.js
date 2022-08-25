@@ -31,6 +31,7 @@ module.exports = configure(function (/* ctx */) {
     // https://v2.quasar.dev/quasar-cli/boot-files
     boot: [
       'setComponentDefaults',
+      'common-components',
       'i18n',
       'axios',
       'fontawesome-pro',

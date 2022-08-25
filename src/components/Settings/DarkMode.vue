@@ -41,7 +41,7 @@
       </q-card-section>
     </q-card>
     <!-- AUTO -->
-    <q-item class="q-px-none" tag="label">
+    <q-item tag="label">
       <q-item-section>
         <q-item-label>Detect Automatically</q-item-label>
       </q-item-section>

@@ -91,7 +91,7 @@
         :showing="basics.isProcessing('add_watched_master_node')"
         class="q-pa-xl text-center bg-blur"
       >
-        <q-spinner-puff size="50px" color="primary" />
+        <ocean-spinner />
         <p v-if="basics.isFetching('masternode_list')">
           Asking DeFiChain for a complete list of all masternodes ever existed (~10 MB)
         </p>
@@ -112,9 +112,11 @@
 import { defineComponent, ref, computed } from "vue";
 import { useBasicsStore } from "stores/basics";
 import { useUserStore } from "stores/user";
+import OceanSpinner from "../common/OceanSpinner.vue";
 
 export default defineComponent({
   name: "AddMasterNode",
+  components: { OceanSpinner },
 
   setup() {
     const newMasterNodeName = ref("");

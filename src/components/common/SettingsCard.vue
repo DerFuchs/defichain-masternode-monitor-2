@@ -21,7 +21,7 @@
       class="full-width full-height"
       :class="{ 'bg-grey-2': basics.darkMode === false }"
     >
-      <q-card-section class="q-px-none q-py-none">
+      <q-card-section class="q-px-none q-py-none card-header">
         <q-expansion-item
           class="q-pa-none q-ma-none"
           expand-icon="fa-light fa-circle-question"
@@ -42,9 +42,7 @@
 
       <q-separator :class="{ 'light-gradient': user.settings.colorfulMode }" />
 
-      <q-card-section>
-        <slot></slot>
-      </q-card-section>
+      <slot></slot>
     </q-card>
   </div>
 </template>

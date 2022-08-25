@@ -2,7 +2,7 @@
   <q-layout
     view="lHh Lpr lFf"
     :class="{
-      'bg-black': basics.darkMode === true,
+      'bg-darker': basics.darkMode === true,
       'bg-white': basics.darkMode === false,
     }"
   >

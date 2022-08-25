@@ -1,5 +1,9 @@
 <template>
-  <q-spinner-puff v-if="basics.isProcessing('reFetchAllData')" color="accent" size="md" />
+  <q-spinner-puff
+    v-if="basics.isProcessing('reFetchAllData')"
+    color="primary"
+    size="md"
+  />
   <q-btn v-else flat dense :icon="icon" color="white" @click="reFetchAllData()"> </q-btn>
 </template>
 
@@ -30,6 +34,8 @@ export default defineComponent({
         basics.setProcessing("reFetchAllData");
         Promise.all([
           defichain.fetchRewardDistribution(),
+          defichain.fetchStats(),
+          defichain.fetchPrices(),
           user.fetchWatchedMasterNodesData(),
         ]).then(() => {
           setTimeout(() => {

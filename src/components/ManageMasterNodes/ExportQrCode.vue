@@ -50,8 +50,8 @@
 
               <q-card-section class="flex flex-center">
                 <QRCodeVue3
-                  :width="1000"
-                  :height="1000"
+                  :width="700"
+                  :height="700"
                   myclass="qr-container"
                   imgclass="qr-image"
                   :dots-options="{
@@ -289,18 +289,18 @@ export default defineComponent({
   height: 100%
   object-fit: contain
 
-.square
-  width: 100%
-  height: 0
-  padding-top: 100%
-  position: relative
+// .square
+//   width: 100%
+//   height: 0
+//   padding-top: 100%
+//   position: relative
 
-  .content
-    position: absolute
-    width: 100%
-    height: 100%
-    max-height: 80vh
-    max-width: 80vh
-    top: 0
-    left: 0
+//   .content
+//     position: absolute
+//     width: 100%
+//     height: 100%
+//     max-height: 80vh
+//     max-width: 80vh
+//     top: 0
+//     left: 0
 </style>

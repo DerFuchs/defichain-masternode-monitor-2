@@ -1,6 +1,5 @@
 import { store } from 'quasar/wrappers'
 import { createPinia } from 'pinia'
-// import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import { createPersistedStatePlugin } from 'pinia-plugin-persistedstate-2'
 import localforage from 'localforage'
 

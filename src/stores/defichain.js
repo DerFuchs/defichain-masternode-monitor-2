@@ -17,6 +17,7 @@ export const useDeFiChainStore = defineStore('defichain', {
       unallocated: 0,
     },
     prices: {},
+    stats: {},
   }),
 
   persistedState: {
@@ -84,6 +85,7 @@ export const useDeFiChainStore = defineStore('defichain', {
      *
      */
     async fetchRewardDistribution() {
+      if (process.env.DEBUG) console.log('Fetching reward distribution from DeFiChain')
       this.rewardDistribution = await defichain.stats.getRewardDistribution()
     },
 
@@ -92,7 +94,18 @@ export const useDeFiChainStore = defineStore('defichain', {
     /**
      *
      */
+    async fetchStats() {
+      if (process.env.DEBUG) console.log('Fetching statistics from DeFiChain')
+      this.stats = await defichain.stats.get()
+    },
+
+    // ------------------------------------------------------------------------------
+
+    /**
+     *
+     */
     async fetchPrices() {
+      if (process.env.DEBUG) console.log('Fetching DEX prices from DeFiChain')
       return await defichain.prices.get('DFI', 'USD').then(result => {
         this.prices[result.id] = result?.price?.aggregated?.amount
       })

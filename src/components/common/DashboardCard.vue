@@ -21,7 +21,7 @@
       class="full-width full-height"
       :class="{ 'bg-grey-2': basics.darkMode === false }"
     >
-      <q-card-section class="q-px-none q-py-none">
+      <q-card-section class="q-px-none q-py-none card-header">
         <q-expansion-item
           class="q-pa-none q-ma-none"
           expand-icon="fa-light fa-ellipsis-vertical"
@@ -55,9 +55,9 @@
 
       <slot></slot>
 
-      <q-inner-loading :showing="isWorking" class="bg-blur">
-        <q-spinner-puff size="50px" color="primary" />
-      </q-inner-loading>
+      <!-- <q-inner-loading :showing="isWorking" class="bg-blur">
+        <ocean-spinner />
+      </q-inner-loading> -->
     </q-card>
   </div>
 </template>
@@ -101,7 +101,7 @@ export default defineComponent({
         () =>
           `col-xs-${props.cardSizes.xs} col-sm-${props.cardSizes.sm} col-md-${props.cardSizes.md} col-lg-${props.cardSizes.lg} col-xl-${props.cardSizes.xl}`
       ),
-      isWorking: computed(() => basics.isFetching() || basics.isProcessing()),
+      //isWorking: computed(() => basics.isFetching() || basics.isProcessing()),
     };
   },
 });

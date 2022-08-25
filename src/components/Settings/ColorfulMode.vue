@@ -4,8 +4,10 @@
       Somewhere, over the rainbow, skies are blue... and the dreams that you dare to dream
       really do come true.
     </template>
-    <q-separator class="light-gradient q-my-sm" size="10px"></q-separator>
-    <q-item class="q-px-none" tag="label">
+    <q-card-section>
+      <q-separator class="light-gradient q-my-sm" size="10px"></q-separator>
+    </q-card-section>
+    <q-item tag="label">
       <q-item-section>
         <q-item-label v-if="active">Colorful Mode Active</q-item-label>
         <q-item-label v-else>Regular Color Mode Active</q-item-label>

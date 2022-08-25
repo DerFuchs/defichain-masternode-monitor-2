@@ -1,10 +1,23 @@
 // app global css in SCSS form
 .text-primary-dark {
-  background: rgba(173, 0, 119, 1) !important;
+  background: $primary-dark !important;
 }
 
 .bg-primary-dark {
-  background: rgba(173, 0, 119, 1) !important;
+  background: $primary-dark !important;
+}
+
+.bg-darker {
+  background-color: $darker !important;
+}
+
+.q-card {
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1),
+    inset 0px 0px 20px rgba(0, 0, 0, 0.05) !important;
+}
+
+.card-header {
+  box-shadow: inset 0px 0px 2em rgba(0, 0, 0, 0.1) !important;
 }
 
 // https://www.joshwcomeau.com/gradient-generator/

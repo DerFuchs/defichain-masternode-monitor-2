@@ -5,11 +5,14 @@
       <tx-sum />
       <reward-sum />
     </div>
+    <q-inner-loading :showing="isWorking" class="bg-blur">
+      <ocean-spinner />
+    </q-inner-loading>
   </q-page>
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { defineComponent, computed } from "vue";
 import { useBasicsStore } from "stores/basics";
 
 import MintingsCount from "components/Dashboard/MintingsCount.vue";
@@ -26,8 +29,10 @@ export default defineComponent({
   },
 
   setup() {
-    const store = useBasicsStore();
-    return { store };
+    const basics = useBasicsStore();
+    return {
+      isWorking: computed(() => basics.isFetching() || basics.isProcessing()),
+    };
   },
 });
 </script>

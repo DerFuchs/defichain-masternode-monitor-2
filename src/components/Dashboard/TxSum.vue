@@ -1,7 +1,7 @@
 <template>
   <dashboard-card
     headline="Total TX Secured"
-    :card-sizes="{ xs: 6, sm: 3, md: 4, lg: 3, xl: 2 }"
+    :card-sizes="{ xs: 6, sm: 3, md: 3, lg: 2, xl: 2 }"
   >
     <template #description>
       The total number of Transactions your masternodes have written into DeFiChain within
@@ -33,9 +33,11 @@ export default defineComponent({
     return {
       basics,
       user,
-      txCount: computed(() => user.totalBlockProperty("transactionCount")),
+      txCount: computed(() => {
+        return user.totalBlockPropertyContext("transactionCount");
+      }),
       mintingsCount: computed(() =>
-        user.watchedMasterNodes.reduce(
+        user.watchedMasterNodesContext.reduce(
           (total, masternode) => masternode.mintedBlocksCount + total,
           0
         )

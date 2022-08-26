@@ -31,7 +31,7 @@ export default defineComponent({
     return {
       user,
       mintingsCount: computed(() =>
-        user.watchedMasterNodes.reduce(
+        user.watchedMasterNodesContext.reduce(
           (total, masternode) => masternode.mintedBlocksCount + total,
           0
         )

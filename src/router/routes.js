@@ -7,7 +7,10 @@ const routes = [
       {
         path: '',
         name: 'dashboard',
-        component: () => import('src/pages/Dashboard.vue')
+        component: () => import('src/pages/Dashboard.vue'),
+        meta: {
+          masterNodeTabsVisible: true,
+        },
       },
     ]
   },
@@ -19,7 +22,11 @@ const routes = [
       {
         path: '',
         name: 'manage-master-nodes',
-        component: () => import('src/pages/ManageMasterNodes.vue')
+        component: () => import('src/pages/ManageMasterNodes.vue'),
+        meta: {
+          headline: "Manage Masternodes",
+          icon: "fa-light fa-square-list",
+        },
       },
     ]
   },
@@ -31,7 +38,11 @@ const routes = [
       {
         path: '',
         name: 'settings',
-        component: () => import('src/pages/Settings.vue')
+        component: () => import('src/pages/Settings.vue'),
+        meta: {
+          headline: "Settings",
+          icon: "fa-light fa-screwdriver-wrench",
+        },
       },
     ]
   },
@@ -40,7 +51,7 @@ const routes = [
   // but you can also remove it
   {
     path: '/:catchAll(.*)*',
-    component: () => import('pages/ErrorNotFound.vue')
+    component: () => import('pages/ErrorNotFound.vue'),
   }
 ]
 

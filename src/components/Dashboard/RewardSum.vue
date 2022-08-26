@@ -51,10 +51,10 @@
       <div class="text-caption">TX Fees</div>
       DFI
       <span class="text-h5 text-primary">
-        {{ totalDfiRewards.toLocaleString({}, basics.formatting.currency.dfiNoSymbol) }}
+        {{ totalDfiTxFees.toLocaleString({}, basics.formatting.currency.dfiNoSymbol) }}
       </span>
       ({{
-        (totalDfiRewards * defichain.price("DFI-USD")).toLocaleString(
+        (totalDfiTxFees * defichain.price("DFI-USD")).toLocaleString(
           {},
           basics.formatting.currency.usd
         )
@@ -129,16 +129,16 @@ export default defineComponent({
     // 71.51820578
     // 71.51820571
     //getRewardAmountAtBlockHeight(894000);
-    getRewardAmountAtBlockHeight(2157866);
+    //getRewardAmountAtBlockHeight(2157866);
 
     return {
       basics,
       defichain,
       user,
       settings,
-      totalDfi: computed(() => user.totalBlockProperty("reward")),
-      totalDfiRewards: computed(() =>
-        user.watchedMasterNodes.reduce(
+      totalDfi: computed(() => user.totalBlockPropertyContext("reward")),
+      totalDfiTxFees: computed(() =>
+        user.watchedMasterNodesContext.reduce(
           (total, masternode) =>
             masternode.mintedBlocks.reduce(
               (subTotal, minting) =>
@@ -151,7 +151,7 @@ export default defineComponent({
         )
       ),
       mintingsCount: computed(() =>
-        user.watchedMasterNodes.reduce(
+        user.watchedMasterNodesContext.reduce(
           (total, masternode) => masternode.mintedBlocksCount + total,
           0
         )

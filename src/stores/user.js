@@ -5,6 +5,7 @@ import { useBasicsStore } from "stores/basics";
 export const useUserStore = defineStore('user',{
   state: () => ({
     userId: '',
+    masterNodeContext: 'all',
     watchedMasterNodes: [],
     settings: {
       chainNetwork: process.env.OCEAN_NETWORK,
@@ -47,10 +48,19 @@ export const useUserStore = defineStore('user',{
      * Returns true if the user is 'authenticated' - which means that he/she has
      * grabbed a sync key to store settings and watches masternodes remotely.
      *
-     * @param {*} state
      * @returns Boolean
      */
     hasUserId: state => state.userId.length > 0,
+
+    /**
+     * Possibility to switch to a mode where only one specific masternode is set in
+     * context
+     *
+     * @returns
+     */
+    watchedMasterNodesContext: state => {
+      return (state.masterNodeContext == 'all') ? state.watchedMasterNodes : state.watchedMasterNodes.filter((mn) => mn.id == state.masterNodeContext)
+    },
 
     /**
      * Returns true if the user is watching at least one masternode
@@ -82,7 +92,26 @@ export const useUserStore = defineStore('user',{
      */
     watchedMasterNodeIndex: state => identifier => state.watchedMasterNodes.findIndex(entry => entry.ownerAddress == identifier || entry.operatorAddress == identifier || entry.id == identifier),
 
+    /**
+     * Returns the sum of all watched master nodes mintings properties, like "transactionCount"
+     *
+     * @returns Number
+     */
     totalBlockProperty: state => blockKey => state.watchedMasterNodes.reduce(
+      (total, masternode) =>
+        masternode.mintedBlocks.reduce(
+          (subTotal, minting) => parseFloat(minting[blockKey]) + subTotal,
+          0
+        ) + total,
+      0
+    ),
+
+    /**
+     * Returns the sum of context's master nodes mintings properties, like "transactionCount"
+     *
+     * @returns Number
+     */
+    totalBlockPropertyContext: state => blockKey => state.watchedMasterNodesContext.reduce(
       (total, masternode) =>
         masternode.mintedBlocks.reduce(
           (subTotal, minting) => parseFloat(minting[blockKey]) + subTotal,

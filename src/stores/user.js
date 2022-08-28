@@ -62,6 +62,10 @@ export const useUserStore = defineStore('user',{
       return (state.masterNodeContext == 'all') ? state.watchedMasterNodes : state.watchedMasterNodes.filter((mn) => mn.id == state.masterNodeContext)
     },
 
+    watchedActiveMasterNodesContext: state => {
+      return (state.masterNodeContext == 'all') ? state.watchedActiveMasterNodes : state.watchedActiveMasterNodes.filter((mn) => mn.id == state.masterNodeContext)
+    },
+
     /**
      * Returns true if the user is watching at least one masternode
      *

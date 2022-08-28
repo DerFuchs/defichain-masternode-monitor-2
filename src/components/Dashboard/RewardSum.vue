@@ -1,7 +1,7 @@
 <template>
   <dashboard-card
     headline="Total Rewards"
-    :card-sizes="{ xs: 12, sm: 6, md: 4, lg: 3, xl: 2 }"
+    :card-sizes="{ xs: 12, sm: 4, md: 4, lg: 3, xl: 2 }"
   >
     <template #description>
       The total number of DFI your masternodes have received as rewards for the
@@ -29,7 +29,10 @@
     </template>
     <q-card-section>
       DFI
-      <span class="text-h2 text-primary">
+      <span
+        class="text-primary text-weight-light"
+        :class="{ 'text-h2': totalDfi < 10000, 'text-h3': totalDfi >= 10000 }"
+      >
         {{ totalDfi.toLocaleString({}, basics.formatting.currency.dfiNoSymbol) }}
       </span>
     </q-card-section>
@@ -50,7 +53,7 @@
     <q-card-section v-if="settings.showTxFees">
       <div class="text-caption">TX Fees</div>
       DFI
-      <span class="text-h5 text-primary">
+      <span class="text-h5 text-primary text-weight-light">
         {{ totalDfiTxFees.toLocaleString({}, basics.formatting.currency.dfiNoSymbol) }}
       </span>
       ({{

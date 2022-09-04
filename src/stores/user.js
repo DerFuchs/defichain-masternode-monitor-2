@@ -12,7 +12,21 @@ export const useUserStore = defineStore('user',{
       customOceanUrl: null,
       darkMode: 'auto',
       colorfulMode: true,
-      dashboard: {}
+      dashboard: {
+        availableCards: [
+          'MintingsCount',
+          'TxSum',
+          'RewardSum',
+        ],
+        invisibleCards: [
+          'TxSum'
+        ],
+        cardSort: [
+          'MintingsCount',
+          'TxSum',
+          'RewardSum',
+        ],
+      }
     },
 
     watchedMasterNodesEntryDefaults: {
@@ -123,6 +137,11 @@ export const useUserStore = defineStore('user',{
         ) + total,
       0
     ),
+
+    dashboardCards: state => {
+      let cards = [...state.settings.dashboard.cardSort, ...state.settings.dashboard.availableCards];
+      return new Set(cards.filter(card => !state.settings.dashboard.invisibleCards.includes(card)))
+    }
 
   },
 

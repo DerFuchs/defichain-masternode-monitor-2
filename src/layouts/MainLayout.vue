@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { defineComponent, ref } from "vue";
+import { defineComponent } from "vue";
 
 import { useBasicsStore } from "stores/basics";
 

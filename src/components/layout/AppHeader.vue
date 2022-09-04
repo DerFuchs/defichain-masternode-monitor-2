@@ -4,7 +4,7 @@
     :class="{ 'light-gradient': user.settings.colorfulMode }"
     height-hint="98"
   >
-    <q-ajax-bar position="top" color="accent" size="3px" />
+    <!-- <q-ajax-bar position="top" color="accent" size="3px" /> -->
     <q-toolbar>
       <master-node-tabs v-if="masterNodeTabsVisible" />
       <div v-if="headline" class="text-h6">

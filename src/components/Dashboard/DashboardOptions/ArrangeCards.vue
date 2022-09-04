@@ -52,7 +52,7 @@
 
 							<q-item-section>
 								<q-item-label :class="{ 'text-grey-6': !card.visible }">
-									{{ card.name }}
+									{{ cardText[card.name] }}
 
 									<!-- <span class="text-grey-8"> - GitHub repository</span> -->
 								</q-item-label>
@@ -158,6 +158,12 @@ import { useUserStore } from "stores/user";
 
 //import draggable from "vuedraggable";
 
+const cardText = {
+	RewardSum: "Total Rewards",
+	MintingsCount: "Minted Blocks",
+	TxSum: "Total TX Secured",
+};
+
 export default defineComponent({
 	name: "DashboardOptions",
 
@@ -170,17 +176,26 @@ export default defineComponent({
 
 		const user = useUserStore();
 
-		const availableCards = user.settings.dashboard.availableCards.map(
-			(name, index) => {
-				return { name, order: index + 1, fixed: false };
-			}
-		);
+		const availableCards = user.availableCards.map((name, index) => {
+			return { name, order: index + 1, fixed: false };
+		});
+
+		if (user.settings.dashboard.cardSort.length == 0) {
+			user.settings.dashboard.cardSort = user.availableCards;
+		} else {
+			user.settings.dashboard.cardSort = [
+				...new Set([
+					...user.settings.dashboard.cardSort,
+					...user.availableCards,
+				]),
+			];
+		}
 
 		const cardSort = computed(() =>
 			[
 				...new Set([
 					...user.settings.dashboard.cardSort,
-					...user.settings.dashboard.availableCards,
+					...user.availableCards,
 				]),
 			].map((name, index) => {
 				const invisible = new Set(user.settings.dashboard.invisibleCards).has(
@@ -195,6 +210,7 @@ export default defineComponent({
 			user,
 			availableCards,
 			cardSort,
+			cardText,
 			dialogVisible: ref(false),
 			drag: ref(false),
 			dragOptions: {

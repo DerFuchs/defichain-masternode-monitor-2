@@ -13,21 +13,16 @@ export const useUserStore = defineStore('user',{
       darkMode: 'auto',
       colorfulMode: true,
       dashboard: {
-        availableCards: [
-          'MintingsCount',
-          'TxSum',
-          'RewardSum',
-        ],
-        invisibleCards: [
-          'TxSum'
-        ],
-        cardSort: [
-          'MintingsCount',
-          'TxSum',
-          'RewardSum',
-        ],
+        invisibleCards: [],
+        cardSort: [],
       }
     },
+
+    availableCards: [
+      'RewardSum',
+      'MintingsCount',
+      'TxSum',
+    ],
 
     watchedMasterNodesEntryDefaults: {
       name: '',
@@ -52,6 +47,10 @@ export const useUserStore = defineStore('user',{
    */
   persistedState: {
     key: 'mamon-user',
+    excludePaths: [
+      'availableCards',
+      'watchedMasterNodesEntryDefaults',
+    ]
   },
 
   // --------------------------------------------------------------------------------
@@ -139,7 +138,7 @@ export const useUserStore = defineStore('user',{
     ),
 
     dashboardCards: state => {
-      let cards = [...state.settings.dashboard.cardSort, ...state.settings.dashboard.availableCards];
+      let cards = [...state.settings.dashboard.cardSort, ...state.availableCards];
       return new Set(cards.filter(card => !state.settings.dashboard.invisibleCards.includes(card)))
     }
 

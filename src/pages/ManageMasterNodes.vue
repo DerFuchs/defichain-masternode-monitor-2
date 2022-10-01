@@ -1,19 +1,41 @@
 <template>
-  <q-page class="q-pa-md">
-    <div class="row items-stretch q-col-gutter-md">
-      <master-node-entry
-        v-for="masterNode in user.watchedMasterNodes"
-        :key="masterNode.ownerAddress"
-        :data="masterNode"
-      />
-      <add-master-node />
-      <export-qr-code />
-    </div>
-  </q-page>
+	<q-page class="q-pa-md">
+		<div class="row items-stretch q-col-gutter-md q-mb-md">
+			<div class="col-12">
+				<q-toggle
+					v-model="settings.showAddresses"
+					color="accent"
+					label="Show Addresses"
+					checked-icon="fa-light fa-check"
+					unchecked-icon="fa-light fa-x"
+				/>
+				<q-toggle
+					v-model="settings.showDetails"
+					color="accent"
+					label="Show More Details"
+					checked-icon="fa-light fa-check"
+					unchecked-icon="fa-light fa-x"
+				/>
+			</div>
+		</div>
+		<q-separator :class="{ 'light-gradient': user.settings.colorfulMode }" />
+		<div class="row items-stretch q-col-gutter-md q-my-md">
+			<master-node-entry
+				v-for="masterNode in user.watchedMasterNodes"
+				:key="masterNode.ownerAddress"
+				:data="masterNode"
+			/>
+		</div>
+		<q-separator :class="{ 'light-gradient': user.settings.colorfulMode }" />
+		<div class="row items-stretch q-col-gutter-md q-mt-xs">
+			<add-master-node />
+			<export-qr-code />
+		</div>
+	</q-page>
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { defineComponent, reactive, watch } from "vue";
 
 import { useUserStore } from "stores/user";
 
@@ -22,18 +44,33 @@ import AddMasterNode from "components/ManageMasterNodes/AddMasterNode.vue";
 import ExportQrCode from "components/ManageMasterNodes/ExportQrCode.vue";
 
 export default defineComponent({
-  name: "ManageMasterNodes",
+	name: "ManageMasterNodes",
 
-  components: {
-    MasterNodeEntry,
-    AddMasterNode,
-    ExportQrCode,
-  },
+	components: {
+		MasterNodeEntry,
+		AddMasterNode,
+		ExportQrCode,
+	},
 
-  setup() {
-    return {
-      user: useUserStore(),
-    };
-  },
+	setup() {
+		const user = useUserStore();
+
+		const settings = reactive({
+			...{
+				showAddresses: true,
+				showDetails: true,
+			},
+			...(user.settings?.manageMasternodesPage ?? {}),
+		});
+
+		watch(settings, (newSettings) => {
+			user.settings.manageMasternodesPage = newSettings;
+		});
+
+		return {
+			user,
+			settings,
+		};
+	},
 });
 </script>

@@ -15,7 +15,8 @@ export const useUserStore = defineStore('user',{
       dashboard: {
         invisibleCards: [],
         cardSort: [],
-      }
+      },
+      manageMasternodesPage: {}
     },
 
     availableCards: [

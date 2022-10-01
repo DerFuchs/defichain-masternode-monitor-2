@@ -1,3 +1,4 @@
+import { useQuasar } from 'quasar'
 import { defineStore } from 'pinia';
 import { useDeFiChainStore } from "stores/defichain";
 import { useBasicsStore } from "stores/basics";
@@ -5,6 +6,8 @@ import { useBasicsStore } from "stores/basics";
 export const useUserStore = defineStore('user',{
   state: () => ({
     userId: '',
+    platform: useQuasar().platform,
+    screen: useQuasar().screen,
     masterNodeContext: 'all',
     watchedMasterNodes: [],
     settings: {
@@ -51,6 +54,8 @@ export const useUserStore = defineStore('user',{
     excludePaths: [
       'availableCards',
       'watchedMasterNodesEntryDefaults',
+      'platform',
+      'screen',
     ]
   },
 

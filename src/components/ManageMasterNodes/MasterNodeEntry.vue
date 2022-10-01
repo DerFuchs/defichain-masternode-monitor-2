@@ -69,139 +69,159 @@
 				</q-expansion-item>
 			</q-card-section>
 
-			<q-separator
-				v-if="user.settings?.manageMasternodesPage?.showAddresses"
-				:class="{ 'light-gradient': user.settings.colorfulMode }"
-			/>
-			<q-card-section
-				v-if="user.settings?.manageMasternodesPage?.showAddresses"
+			<transition-group
+				:enter-active-class="basics.dashboardCardsContentEnterAnimation"
+				:leave-active-class="basics.dashboardCardsContentLeaveAnimation"
 			>
-				<q-list>
-					<!-- Owner Address -->
-					<q-item class="q-px-none">
-						<q-item-section side>
-							<q-icon v-if="!isFrozen" name="fa-light fa-face-grin-stars" />
-							<q-icon
-								v-else
-								name="fa-light fa-face-icicles"
-								color="light-blue"
-							/>
-						</q-item-section>
-						<q-item-section>
-							<q-item-label class="ellipsis">{{
-								data.ownerAddress
-							}}</q-item-label>
-							<q-item-label caption>Owner Address</q-item-label>
-						</q-item-section>
-					</q-item>
+				<q-separator
+					v-if="user.settings?.manageMasternodesPage?.showAddresses"
+					key="separator"
+					:class="{ 'light-gradient': user.settings.colorfulMode }"
+				/>
+				<q-card-section
+					v-if="user.settings?.manageMasternodesPage?.showAddresses"
+					key="data"
+				>
+					<q-list>
+						<!-- Owner Address -->
+						<q-item class="q-px-none">
+							<q-item-section side>
+								<q-icon v-if="!isFrozen" name="fa-light fa-face-grin-stars" />
+								<q-icon
+									v-else
+									name="fa-light fa-face-icicles"
+									color="light-blue"
+								/>
+							</q-item-section>
+							<q-item-section>
+								<q-item-label class="ellipsis">{{
+									data.ownerAddress
+								}}</q-item-label>
+								<q-item-label caption>Owner Address</q-item-label>
+							</q-item-section>
+						</q-item>
 
-					<!-- Operator address -->
-					<q-item class="q-px-none">
-						<q-item-section side>
-							<q-icon name="fa-light fa-face-glasses" />
-						</q-item-section>
-						<q-item-section>
-							<q-item-label class="ellipsis">{{
-								data.operatorAddress
-							}}</q-item-label>
-							<q-item-label caption>Operator Address</q-item-label>
-						</q-item-section>
-					</q-item>
+						<!-- Operator address -->
+						<q-item class="q-px-none">
+							<q-item-section side>
+								<q-icon name="fa-light fa-face-glasses" />
+							</q-item-section>
+							<q-item-section>
+								<q-item-label class="ellipsis">{{
+									data.operatorAddress
+								}}</q-item-label>
+								<q-item-label caption>Operator Address</q-item-label>
+							</q-item-section>
+						</q-item>
 
-					<!-- ID -->
-					<q-item class="q-px-none">
-						<q-item-section side>
-							<q-icon name="fa-light fa-fingerprint" />
-						</q-item-section>
-						<q-item-section>
-							<q-item-label class="ellipsis">{{ data.id }}</q-item-label>
-							<q-item-label caption>ID on DeFiChain</q-item-label>
-						</q-item-section>
-					</q-item>
-				</q-list>
-			</q-card-section>
+						<!-- ID -->
+						<q-item class="q-px-none">
+							<q-item-section side>
+								<q-icon name="fa-light fa-fingerprint" />
+							</q-item-section>
+							<q-item-section>
+								<q-item-label class="ellipsis">{{ data.id }}</q-item-label>
+								<q-item-label caption>ID on DeFiChain</q-item-label>
+							</q-item-section>
+						</q-item>
+					</q-list>
+				</q-card-section>
+			</transition-group>
 
-			<q-separator
-				v-if="user.settings?.manageMasternodesPage?.showDetails"
-				:class="{ 'light-gradient': user.settings.colorfulMode }"
-			/>
-			<q-card-section v-if="user.settings?.manageMasternodesPage?.showDetails">
-				<q-list class="row">
-					<!-- Minted Blocks Count -->
-					<q-item v-if="data.mintedBlocksCount" class="q-px-none col-6">
-						<q-item-section side>
-							<q-icon name="fa-light fa-cube" />
-						</q-item-section>
-						<q-item-section>
-							<q-item-label class="ellipsis">{{
-								data.mintedBlocksCount.toLocaleString()
-							}}</q-item-label>
-							<q-item-label caption>Minted Blocks</q-item-label>
-						</q-item-section>
-					</q-item>
+			<transition-group
+				:enter-active-class="basics.dashboardCardsContentEnterAnimation"
+				:leave-active-class="basics.dashboardCardsContentLeaveAnimation"
+			>
+				<q-separator
+					v-if="user.settings?.manageMasternodesPage?.showDetails"
+					key="separator"
+					:class="{ 'light-gradient': user.settings.colorfulMode }"
+				/>
+				<q-card-section
+					v-if="user.settings?.manageMasternodesPage?.showDetails"
+					key="data"
+				>
+					<q-list class="row">
+						<!-- Minted Blocks Count -->
+						<q-item v-if="data.mintedBlocksCount" class="q-px-none col-6">
+							<q-item-section side>
+								<q-icon name="fa-light fa-cube" />
+							</q-item-section>
+							<q-item-section>
+								<q-item-label class="ellipsis">{{
+									data.mintedBlocksCount.toLocaleString()
+								}}</q-item-label>
+								<q-item-label caption>Minted Blocks</q-item-label>
+							</q-item-section>
+						</q-item>
 
-					<!-- Created at block -->
-					<q-item class="q-px-none col-6">
-						<q-item-section side>
-							<q-icon name="fa-light fa-hand-wave" />
-						</q-item-section>
-						<q-item-section>
-							<q-item-label class="ellipsis">
-								{{ data.creationBlock.toLocaleString() }}
-							</q-item-label>
-							<q-item-label caption>Created At Block</q-item-label>
-						</q-item-section>
-					</q-item>
+						<!-- Created at block -->
+						<q-item class="q-px-none col-6">
+							<q-item-section side>
+								<q-icon name="fa-light fa-hand-wave" />
+							</q-item-section>
+							<q-item-section>
+								<q-item-label class="ellipsis">
+									{{ data.creationBlock.toLocaleString() }}
+								</q-item-label>
+								<q-item-label caption>Created At Block</q-item-label>
+							</q-item-section>
+						</q-item>
 
-					<!-- Age in Blocks -->
-					<q-item class="q-px-none col-6">
-						<q-item-section side>
-							<q-icon name="fa-light fa-watch" />
-						</q-item-section>
-						<q-item-section>
-							<q-item-label v-if="!isResigned" class="ellipsis">
-								{{
-									(
-										defichain.stats.count.blocks - data.creationBlock
-									).toLocaleString()
-								}}
-							</q-item-label>
-							<q-item-label v-if="isResigned" class="ellipsis">
-								{{ (data.resignBlock - data.creationBlock).toLocaleString() }}
-							</q-item-label>
-							<q-item-label caption>Age in Blocks</q-item-label>
-						</q-item-section>
-					</q-item>
+						<!-- Age in Blocks -->
+						<q-item class="q-px-none col-6">
+							<q-item-section side>
+								<q-icon name="fa-light fa-watch" />
+							</q-item-section>
+							<q-item-section>
+								<q-item-label v-if="!isResigned" class="ellipsis">
+									{{
+										(
+											defichain.stats.count.blocks - data.creationBlock
+										).toLocaleString()
+									}}
+								</q-item-label>
+								<q-item-label v-if="isResigned" class="ellipsis">
+									{{ (data.resignBlock - data.creationBlock).toLocaleString() }}
+								</q-item-label>
+								<q-item-label caption>Age in Blocks</q-item-label>
+							</q-item-section>
+						</q-item>
 
-					<!-- Frozen -->
-					<q-item v-if="isFrozen" class="q-px-none col-6">
-						<q-item-section side>
-							<q-icon v-if="!isFrozen" name="fa-light fa-face-grin-stars" />
-							<q-icon v-else name="fa-light fa-snowflake" color="light-blue" />
-						</q-item-section>
-						<q-item-section>
-							<q-item-label class="ellipsis">
-								<span v-if="data.timelock == 520">10 Years</span>
-								<span v-if="data.timelock == 520 / 2">5 Years</span>
-							</q-item-label>
-							<q-item-label caption>Frozen</q-item-label>
-						</q-item-section>
-					</q-item>
+						<!-- Frozen -->
+						<q-item v-if="isFrozen" class="q-px-none col-6">
+							<q-item-section side>
+								<q-icon v-if="!isFrozen" name="fa-light fa-face-grin-stars" />
+								<q-icon
+									v-else
+									name="fa-light fa-snowflake"
+									color="light-blue"
+								/>
+							</q-item-section>
+							<q-item-section>
+								<q-item-label class="ellipsis">
+									<span v-if="data.timelock == 520">10 Years</span>
+									<span v-if="data.timelock == 520 / 2">5 Years</span>
+								</q-item-label>
+								<q-item-label caption>Frozen</q-item-label>
+							</q-item-section>
+						</q-item>
 
-					<!-- Resigned -->
-					<q-item v-if="isResigned" class="q-px-none col-6">
-						<q-item-section side>
-							<q-icon name="fa-light fa-skull" color="negative" />
-						</q-item-section>
-						<q-item-section>
-							<q-item-label class="ellipsis">{{
-								data.resignBlock.toLocaleString()
-							}}</q-item-label>
-							<q-item-label caption>Resigned At Block</q-item-label>
-						</q-item-section>
-					</q-item>
-				</q-list>
-			</q-card-section>
+						<!-- Resigned -->
+						<q-item v-if="isResigned" class="q-px-none col-6">
+							<q-item-section side>
+								<q-icon name="fa-light fa-skull" color="negative" />
+							</q-item-section>
+							<q-item-section>
+								<q-item-label class="ellipsis">{{
+									data.resignBlock.toLocaleString()
+								}}</q-item-label>
+								<q-item-label caption>Resigned At Block</q-item-label>
+							</q-item-section>
+						</q-item>
+					</q-list>
+				</q-card-section>
+			</transition-group>
 		</q-card>
 	</div>
 </template>

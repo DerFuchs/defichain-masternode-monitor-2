@@ -48,38 +48,52 @@
 				}}
 			</span>
 		</q-card-section>
-		<q-separator v-if="settings.showCurrencies" />
-		<q-card-section v-if="settings.showCurrencies" class="row">
-			<div class="text-caption col-12">In other currencies</div>
-			<div class="col-4 text-body1">
-				{{
-					(totalDfi * defichain.price("DFI-USD")).toLocaleString(
+		<transition-group
+			:enter-active-class="basics.dashboardCardsContentEnterAnimation"
+			:leave-active-class="basics.dashboardCardsContentLeaveAnimation"
+		>
+			<q-separator v-if="settings.showCurrencies" key="currenciesSeparator" />
+			<q-card-section
+				v-if="settings.showCurrencies"
+				key="currenciesData"
+				class="row"
+			>
+				<div class="text-caption col-12">In other currencies</div>
+				<div class="col-4 text-body1">
+					{{
+						(totalDfi * defichain.price("DFI-USD")).toLocaleString(
+							{},
+							basics.formatting.currency.usd
+						)
+					}}
+				</div>
+			</q-card-section>
+		</transition-group>
+
+		<transition-group
+			:enter-active-class="basics.dashboardCardsContentEnterAnimation"
+			:leave-active-class="basics.dashboardCardsContentLeaveAnimation"
+		>
+			<q-separator v-if="settings.showTxFees" key="txFeesSeparator" />
+			<q-card-section v-if="settings.showTxFees" key="txFees">
+				<div class="text-caption">TX Fees</div>
+				DFI
+				<span class="text-h5 text-primary text-weight-light">
+					{{
+						totalDfiTxFees.toLocaleString(
+							{},
+							basics.formatting.currency.dfiNoSymbol
+						)
+					}}
+				</span>
+				({{
+					(totalDfiTxFees * defichain.price("DFI-USD")).toLocaleString(
 						{},
 						basics.formatting.currency.usd
 					)
-				}}
-			</div>
-		</q-card-section>
-
-		<q-separator v-if="settings.showTxFees" />
-		<q-card-section v-if="settings.showTxFees">
-			<div class="text-caption">TX Fees</div>
-			DFI
-			<span class="text-h5 text-primary text-weight-light">
-				{{
-					totalDfiTxFees.toLocaleString(
-						{},
-						basics.formatting.currency.dfiNoSymbol
-					)
-				}}
-			</span>
-			({{
-				(totalDfiTxFees * defichain.price("DFI-USD")).toLocaleString(
-					{},
-					basics.formatting.currency.usd
-				)
-			}})
-		</q-card-section>
+				}})
+			</q-card-section>
+		</transition-group>
 	</dashboard-card>
 </template>
 

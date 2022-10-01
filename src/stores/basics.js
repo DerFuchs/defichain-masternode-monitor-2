@@ -18,7 +18,9 @@ export const useBasicsStore = defineStore('basics',
         dfi: { style: 'currency', currency: 'DFI' },
         dfiNoSymbol: { minimumFractionDigits: 2, maximumFractionDigits: 2 },
       }
-    }
+    },
+    dashboardCardsContentEnterAnimation: "animated jackInTheBox",
+    dashboardCardsContentLeaveAnimation: "animated flipOutY",
   }),
 
   persistedState: {
@@ -29,6 +31,9 @@ export const useBasicsStore = defineStore('basics',
       'formatting',
       'lastRefresh',
       'version',
+      'dashboardCardsContentEnterAnimation',
+      'dashboardCardsContentLeaveAnimation',
+
     ]
   },
 

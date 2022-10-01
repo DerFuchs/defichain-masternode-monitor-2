@@ -57,51 +57,63 @@
 				</q-item-section>
 			</q-item>
 		</template>
-		<q-card-section
-			v-if="settings.showSum"
-			class="text-primary text-weight-light text-center"
-			:class="{ 'text-h2': txCount < 1000, 'text-h3': txCount >= 1000 }"
+		<transition
+			:enter-active-class="basics.dashboardCardsContentEnterAnimation"
+			:leave-active-class="basics.dashboardCardsContentLeaveAnimation"
 		>
-			{{ txCount.toLocaleString() }}
-		</q-card-section>
-		<q-separator
-			v-if="
-				settings.showSeparately &&
-				user.watchedActiveMasterNodesContext.length > 1
-			"
-		/>
-		<q-card-section
-			v-if="
-				settings.showSeparately &&
-				user.watchedActiveMasterNodesContext.length > 1
-			"
-			class="q-px-none"
+			<q-card-section
+				v-if="settings.showSum"
+				class="text-primary text-weight-light text-center"
+				:class="{ 'text-h2': txCount < 1000, 'text-h3': txCount >= 1000 }"
+			>
+				{{ txCount.toLocaleString() }}
+			</q-card-section>
+		</transition>
+		<transition-group
+			:enter-active-class="basics.dashboardCardsContentEnterAnimation"
+			:leave-active-class="basics.dashboardCardsContentLeaveAnimation"
 		>
-			<q-list class="row text-center">
-				<q-item
-					v-for="masternode in user.watchedActiveMasterNodesContext"
-					:key="masternode.id"
-					class="col-xs-6 col-sm-4 col-md-4 q-px-none"
-				>
-					<q-item-section>
-						<q-item-label class="text-h5 text-primary text-weight-light">
-							{{
-								masternode.mintedBlocks
-									.reduce(
-										(subTotal, minting) =>
-											parseFloat(minting["transactionCount"]) + subTotal,
-										0
-									)
-									.toLocaleString()
-							}}
-						</q-item-label>
-						<q-item-label caption class="ellipsis">{{
-							masternode.name
-						}}</q-item-label>
-					</q-item-section>
-				</q-item>
-			</q-list>
-		</q-card-section>
+			<q-separator
+				v-if="
+					settings.showSeparately &&
+					user.watchedActiveMasterNodesContext.length > 1
+				"
+				key="separator"
+			/>
+			<q-card-section
+				v-if="
+					settings.showSeparately &&
+					user.watchedActiveMasterNodesContext.length > 1
+				"
+				key="data"
+				class="q-px-none"
+			>
+				<q-list class="row text-center">
+					<q-item
+						v-for="masternode in user.watchedActiveMasterNodesContext"
+						:key="masternode.id"
+						class="col-xs-6 col-sm-4 col-md-4 q-px-none"
+					>
+						<q-item-section>
+							<q-item-label class="text-h5 text-primary text-weight-light">
+								{{
+									masternode.mintedBlocks
+										.reduce(
+											(subTotal, minting) =>
+												parseFloat(minting["transactionCount"]) + subTotal,
+											0
+										)
+										.toLocaleString()
+								}}
+							</q-item-label>
+							<q-item-label caption class="ellipsis">{{
+								masternode.name
+							}}</q-item-label>
+						</q-item-section>
+					</q-item>
+				</q-list>
+			</q-card-section>
+		</transition-group>
 	</dashboard-card>
 </template>
 

@@ -13,7 +13,7 @@
   "dependencies": {
     "@defichain/whale-api-client": "^2.54.2",
     "@fortawesome/fontawesome-pro": "^6.1.2",
-    "@quasar/extras": "^1.0.0",
+    "@quasar/extras": "^1.15.4",
     "axios": "^0.21.1",
     "localforage": "^1.10.0",
     "luxon": "^3.0.1",
@@ -21,7 +21,7 @@
     "pinia-plugin-persistedstate-2": "^1.0.1",
     "qrcode-reader-vue3": "^3.1.2",
     "qrcode-vue3": "^1.4.17",
-    "quasar": "^2.6.0",
+    "quasar": "^2.8.4",
     "vue": "^3.0.0",
     "vue-i18n": "^9.0.0",
     "vue-router": "^4.0.0",
@@ -29,7 +29,7 @@
   },
   "devDependencies": {
     "@intlify/vite-plugin-vue-i18n": "^3.3.1",
-    "@quasar/app-vite": "^1.0.0",
+    "@quasar/app-vite": "^1.1.2",
     "autoprefixer": "^10.4.2",
     "dotenv": "^16.0.1",
     "eslint": "^8.10.0",

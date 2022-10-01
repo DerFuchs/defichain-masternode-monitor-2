@@ -1,6 +1,9 @@
 <template>
 	<q-page class="q-pa-md">
-		<div class="row items-stretch q-col-gutter-md q-mb-md">
+		<div
+			v-if="user.watchesMasterNodes"
+			class="row items-stretch q-col-gutter-md q-mb-md"
+		>
 			<div class="col-12">
 				<q-toggle
 					v-model="settings.showAddresses"
@@ -18,15 +21,24 @@
 				/>
 			</div>
 		</div>
-		<q-separator :class="{ 'light-gradient': user.settings.colorfulMode }" />
-		<div class="row items-stretch q-col-gutter-md q-my-md">
+		<q-separator
+			v-if="user.watchesMasterNodes"
+			:class="{ 'light-gradient': user.settings.colorfulMode }"
+		/>
+		<div
+			class="row items-stretch q-col-gutter-md"
+			:class="{ 'q-my-md': user.watchesMasterNodes }"
+		>
 			<master-node-entry
 				v-for="masterNode in user.watchedMasterNodes"
 				:key="masterNode.ownerAddress"
 				:data="masterNode"
 			/>
 		</div>
-		<q-separator :class="{ 'light-gradient': user.settings.colorfulMode }" />
+		<q-separator
+			v-if="user.watchesMasterNodes"
+			:class="{ 'light-gradient': user.settings.colorfulMode }"
+		/>
 		<div class="row items-stretch q-col-gutter-md q-mt-xs">
 			<add-master-node />
 			<export-qr-code />

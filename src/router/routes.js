@@ -47,6 +47,22 @@ const routes = [
     ]
   },
 
+  {
+    path: '/wtf',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      {
+        path: '',
+        name: 'wtf',
+        component: () => import('src/pages/Wtf.vue'),
+        meta: {
+          headline: "WTF?!",
+          icon: "fa-light fa-face-monocle",
+        },
+      },
+    ]
+  },
+
   // Always leave this as last one,
   // but you can also remove it
   {

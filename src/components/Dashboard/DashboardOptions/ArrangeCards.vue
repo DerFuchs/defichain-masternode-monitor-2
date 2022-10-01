@@ -3,7 +3,6 @@
 		outline
 		icon="fa-light fa-arrow-down-arrow-up"
 		label="arrange"
-		class="full-width"
 		@click="dialogVisible = !dialogVisible"
 	>
 		<q-dialog

@@ -1,13 +1,15 @@
 <template>
-  <q-page class="q-pa-md">
-    <div class="row items-stretch q-col-gutter-md">
-      <component
-        :is="component"
-        v-for="component in user.dashboardCards"
-        :key="component"
-      />
-      <dashboard-options />
-      <!--
+	<q-page class="q-pa-md">
+		<div class="row items-stretch q-col-gutter-md">
+			<component
+				:is="component"
+				v-for="component in user.dashboardCards"
+				:key="component"
+			/>
+		</div>
+		<div class="row q-mt-xl">
+			<dashboard-options />
+			<!--
       <q-card flat :bordered="!$q.dark.isActive">
         <q-card-section>
           <div class="text-h6">{{ $t("Missing Something?") }}</div>
@@ -21,11 +23,11 @@
           </p>
         </q-card-section>
       </q-card> -->
-    </div>
-    <q-inner-loading :showing="isWorking" class="bg-blur">
-      <ocean-spinner />
-    </q-inner-loading>
-  </q-page>
+		</div>
+		<q-inner-loading :showing="isWorking" class="bg-blur">
+			<ocean-spinner />
+		</q-inner-loading>
+	</q-page>
 </template>
 
 <script>
@@ -37,26 +39,26 @@ import { useUserStore } from "stores/user";
 import MintingsCount from "components/Dashboard/MintingsCount.vue";
 import RewardSum from "components/Dashboard/RewardSum.vue";
 import TxSum from "components/Dashboard/TxSum.vue";
-import DashboardOptions from "src/components/Dashboard/DachboardOptions.vue";
+import DashboardOptions from "src/components/Dashboard/DashboardOptions.vue";
 
 export default defineComponent({
-  name: "DashboardPage",
+	name: "DashboardPage",
 
-  components: {
-    MintingsCount,
-    RewardSum,
-    TxSum,
-    DashboardOptions,
-  },
+	components: {
+		MintingsCount,
+		RewardSum,
+		TxSum,
+		DashboardOptions,
+	},
 
-  setup() {
-    const basics = useBasicsStore();
-    const user = useUserStore();
+	setup() {
+		const basics = useBasicsStore();
+		const user = useUserStore();
 
-    return {
-      user,
-      isWorking: computed(() => basics.isFetching() || basics.isProcessing()),
-    };
-  },
+		return {
+			user,
+			isWorking: computed(() => basics.isFetching() || basics.isProcessing()),
+		};
+	},
 });
 </script>

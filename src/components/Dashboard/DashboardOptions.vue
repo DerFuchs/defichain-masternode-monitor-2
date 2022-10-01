@@ -1,5 +1,5 @@
 <template>
-	<div class="col-xs-12 col-sm-4 col-md-3 col-lg-2 cpl-xl-1">
+	<div class="col-12 text-center absolute-bottom q-pb-md">
 		<arrange-cards />
 		<!-- <q-card
 			class="full-width full-height"

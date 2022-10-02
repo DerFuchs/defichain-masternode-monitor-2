@@ -27,123 +27,60 @@
 						color="white"
 					/>
 				</q-card-section>
-				<!-- <q-bar class="bg-primary-dark text-white">
-					Arrange Cards On Dashboard
-					<q-space />
-					<q-btn
-						v-close-popup
-						dense
-						flat
-						icon="fa-light fa-close"
-						class="text-white"
-					>
-						<q-tooltip class="bg-white text-primary">Close</q-tooltip>
-					</q-btn>
-				</q-bar> -->
 				<q-card-section>
 					<q-list separator>
-						<q-item v-for="(card, index) of cardSort" :key="card">
-							<!-- <q-item-section avatar top> Test </q-item-section> -->
+						<draggable
+							v-model="cardSort"
+							tag="div"
+							item-key="name"
+							handle=".handle"
+							ghost-class="bg-accent"
+							animation="250"
+							easing="cubic-bezier(1, 0, 0, 1)"
+						>
+							<template #item="{ element }">
+								<q-item :key="element.name">
+									<q-item-section>
+										<q-item-label :class="{ 'text-grey-6': !element.visible }">
+											{{ cardText[element.name] }}
+										</q-item-label>
+									</q-item-section>
 
-							<q-item-section top class="col-2 gt-sm">
-								<q-item-label class="q-mt-sm">GitHub</q-item-label>
-							</q-item-section>
-
-							<q-item-section>
-								<q-item-label :class="{ 'text-grey-6': !card.visible }">
-									{{ cardText[card.name] }}
-
-									<!-- <span class="text-grey-8"> - GitHub repository</span> -->
-								</q-item-label>
-								<!-- <q-item-label caption lines="1">
-                  @rstoenescu in #3: > Generic type parameter for props
-                </q-item-label> -->
-							</q-item-section>
-
-							<q-item-section top side>
-								<div class="text-grey-8 q-gutter-xs">
-									<q-btn
-										v-if="card.visible"
-										size="12px"
-										flat
-										dense
-										round
-										icon="fa-light fa-eye"
-										@click="toggleVisibility(card.name)"
-									/>
-									<q-btn
-										v-if="!card.visible"
-										size="12px"
-										flat
-										dense
-										round
-										icon="fa-light fa-eye-slash"
-										@click="toggleVisibility(card.name)"
-									/>
-									<q-btn
-										:disabled="index == 0"
-										size="12px"
-										flat
-										dense
-										round
-										icon="fa-light fa-arrow-up"
-										@click="moveCardUp(card.name)"
-									/>
-									<q-btn
-										:disabled="index == cardSort.length - 1"
-										size="12px"
-										flat
-										dense
-										round
-										icon="fa-light fa-arrow-down"
-										@click="moveCardDown(card.name)"
-									/>
-								</div>
-							</q-item-section>
-							<!-- <q-card-section
-								style="position: fixed; bottom: 0; left: 0; right: 0"
-							>
-								<q-btn
-									v-close-popup
-									outline
-									icon="fa-light fa-close"
-									label="close"
-									class="full-width"
-								/>
-							</q-card-section> -->
-						</q-item>
+									<q-item-section top side>
+										<div class="text-grey-8 q-gutter-xs">
+											<q-btn
+												v-if="element.visible"
+												size="12px"
+												flat
+												dense
+												round
+												icon="fa-light fa-eye"
+												@click="toggleVisibility(element.name)"
+											/>
+											<q-btn
+												v-if="!element.visible"
+												size="12px"
+												flat
+												dense
+												round
+												icon="fa-light fa-eye-slash"
+												@click="toggleVisibility(element.name)"
+											/>
+											<q-btn
+												size="12px"
+												flat
+												dense
+												round
+												class="handle"
+												icon="fa-light fa-grip-dots-vertical"
+											/>
+										</div>
+									</q-item-section>
+								</q-item>
+							</template>
+						</draggable>
 					</q-list>
 				</q-card-section>
-				<!--
-        <q-card-section>
-          <draggable
-            v-model="availableCards"
-            class="list-group"
-            tag="transition-group"
-            :component-data="{
-              tag: 'ul',
-              type: 'transition-group',
-              name: !drag ? 'flip-list' : null,
-            }"
-            v-bind="dragOptions"
-            item-key="order"
-            @start="drag = true"
-            @end="drag = false"
-          >
-            <template #item="{ element }">
-              <li class="list-group-item">
-                <i
-                  :class="
-                    element.fixed ? 'fa-light fa-anchor' : 'glyphicon glyphicon-pushpin'
-                  "
-                  aria-hidden="true"
-                  @click="element.fixed = !element.fixed"
-                ></i>
-                {{ element.name }}
-              </li>
-            </template>
-          </draggable>
-        </q-card-section> -->
 			</q-card>
 		</q-dialog>
 	</q-btn>
@@ -155,7 +92,7 @@ import { defineComponent, ref, computed } from "vue";
 import { useBasicsStore } from "stores/basics";
 import { useUserStore } from "stores/user";
 
-//import draggable from "vuedraggable";
+import draggable from "vuedraggable";
 
 const cardText = {
 	RewardSum: "Total Rewards",
@@ -167,12 +104,11 @@ export default defineComponent({
 	name: "DashboardOptions",
 
 	components: {
-		//draggable,
+		draggable,
 	},
 
 	setup() {
 		const basics = useBasicsStore();
-
 		const user = useUserStore();
 
 		const availableCards = user.availableCards.map((name, index) => {
@@ -190,19 +126,25 @@ export default defineComponent({
 			];
 		}
 
-		const cardSort = computed(() =>
-			[
-				...new Set([
-					...user.settings.dashboard.cardSort,
-					...user.availableCards,
-				]),
-			].map((name, index) => {
-				const invisible = new Set(user.settings.dashboard.invisibleCards).has(
-					name
+		const cardSort = computed({
+			get: () =>
+				[
+					...new Set([
+						...user.settings.dashboard.cardSort,
+						...user.availableCards,
+					]),
+				].map((name, index) => {
+					const invisible = new Set(user.settings.dashboard.invisibleCards).has(
+						name
+					);
+					return { name, order: index + 1, visible: !invisible };
+				}),
+			set: (newArragement) => {
+				user.settings.dashboard.cardSort = newArragement.map(
+					(card) => card.name
 				);
-				return { name, order: index + 1, visible: !invisible };
-			})
-		);
+			},
+		});
 
 		return {
 			basics,
@@ -228,20 +170,6 @@ export default defineComponent({
 					user.settings.dashboard.invisibleCards.push(cardName);
 				}
 			},
-			moveCardUp(cardName) {
-				const arr = user.settings.dashboard.cardSort;
-				const fromIndex = arr.indexOf(cardName);
-				const toIndex = fromIndex - 1;
-				const element = arr.splice(fromIndex, 1)[0];
-				arr.splice(toIndex, 0, element);
-			},
-			moveCardDown(cardName) {
-				const arr = user.settings.dashboard.cardSort;
-				const fromIndex = arr.indexOf(cardName);
-				const toIndex = fromIndex + 1;
-				const element = arr.splice(fromIndex, 1)[0];
-				arr.splice(toIndex, 0, element);
-			},
 		};
 	},
 });
@@ -260,13 +188,4 @@ export default defineComponent({
 .ghost
   opacity: 0.5
   background: #c8ebfb
-
-.list-group
-  min-height: 20px
-
-  &-item
-    cursor: move
-
-  &-item i
-    cursor: pointer
 </style>

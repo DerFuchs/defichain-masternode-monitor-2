@@ -27,7 +27,7 @@
 						color="white"
 					/>
 				</q-card-section>
-				<q-card-section>
+				<q-card-section class="q-px-none">
 					<q-list separator>
 						<draggable
 							v-model="cardSort"

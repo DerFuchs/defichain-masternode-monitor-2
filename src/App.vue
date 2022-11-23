@@ -59,7 +59,7 @@ export default defineComponent({
 		});
 
 		const darkModeSetting = toRef(user.settings, "darkMode");
-		quasar.dark.set(darkModeSetting);
+		quasar.dark.set(darkModeSetting.value);
 		watch(darkModeSetting, (newSetting) => {
 			quasar.dark.set(newSetting);
 		});

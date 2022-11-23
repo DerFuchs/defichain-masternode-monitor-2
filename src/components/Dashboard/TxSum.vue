@@ -22,7 +22,9 @@
 				<q-item-section side>
 					<q-toggle
 						v-model="settings.showSum"
-						color="accent"
+						color="secondary"
+						icon-color="black"
+						keep-color
 						checked-icon="fa-light fa-check"
 						unchecked-icon="fa-light fa-x"
 					/>
@@ -36,7 +38,9 @@
 				<q-item-section side>
 					<q-toggle
 						v-model="settings.showSeparately"
-						color="accent"
+						color="secondary"
+						icon-color="black"
+						keep-color
 						checked-icon="fa-light fa-check"
 						unchecked-icon="fa-light fa-x"
 					/>
@@ -50,7 +54,9 @@
 				<q-item-section side>
 					<q-toggle
 						v-model="settings.showBigger"
-						color="accent"
+						color="secondary"
+						icon-color="black"
+						keep-color
 						checked-icon="fa-light fa-check"
 						unchecked-icon="fa-light fa-x"
 					/>

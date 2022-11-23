@@ -16,7 +16,9 @@
 				<q-item-section side>
 					<q-toggle
 						v-model="settings.showCurrencies"
-						color="blue"
+						color="secondary"
+						icon-color="black"
+						keep-color
 						checked-icon="fa-light fa-check"
 						unchecked-icon="fa-light fa-x"
 					/>
@@ -30,7 +32,9 @@
 				<q-item-section side>
 					<q-toggle
 						v-model="settings.showTxFees"
-						color="blue"
+						color="secondary"
+						icon-color="black"
+						keep-color
 						checked-icon="fa-light fa-check"
 						unchecked-icon="fa-light fa-x"
 					/>

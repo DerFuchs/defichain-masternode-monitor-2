@@ -26,6 +26,7 @@ export const useUserStore = defineStore('user',{
       'RewardSum',
       'MintingsCount',
       'TxSum',
+      'MintingPerformance',
     ],
 
     watchedMasterNodesEntryDefaults: {
@@ -194,6 +195,8 @@ export const useUserStore = defineStore('user',{
       })
 
       basics.setProcessingFinished(processingKey)
+
+      useBasicsStore().addNotice('Masternode added', name || identifier)
     },
 
     // ------------------------------------------------------------------------------

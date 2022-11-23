@@ -98,6 +98,7 @@ const cardText = {
 	RewardSum: "Total Rewards",
 	MintingsCount: "Minted Blocks",
 	TxSum: "Total TX Secured",
+	MintingPerformance: "Minting Performance",
 };
 
 export default defineComponent({

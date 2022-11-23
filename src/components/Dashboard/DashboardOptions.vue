@@ -1,20 +1,6 @@
 <template>
 	<div class="col-12 text-center absolute-bottom q-pb-md">
 		<arrange-cards />
-		<!-- <q-card
-			class="full-width full-height"
-			:class="{ 'bg-grey-2': basics.darkMode === false }"
-		>
-			<q-card-section class="q-ma-none">
-        <q-btn
-          v-if="user.settings.dashboard.invisibleCards.length > 0"
-          outline
-          icon="fa-light fa-plus"
-          label="add card"
-          class="full-width"
-        />
-      </q-card-section>
-		</q-card> -->
 	</div>
 </template>
 
@@ -35,29 +21,10 @@ export default defineComponent({
 
 	setup() {
 		const basics = useBasicsStore();
-
 		const user = useUserStore();
-		/*
-    const settings = reactive({
-      ...{
-        showSum: true,
-        showSeparately: false,
-        showBigger: false,
-      },
-      ...(user.settings?.dashboard?.TxSum ?? {}),
-    });
-
-    watch(settings, (newSettings) => {
-      user.settings.dashboard.TxSum = newSettings;
-    });
-    */
-
 		return {
 			basics,
 			user,
-			/*
-      settings,
-      */
 		};
 	},
 });

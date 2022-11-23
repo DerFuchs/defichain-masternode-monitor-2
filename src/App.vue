@@ -1,7 +1,7 @@
 <template>
-  <router-view />
+	<router-view />
 
-  <!-- <q-dialog :model-value="basics.hasUnreadErrors" position="bottom">
+	<!-- <q-dialog :model-value="basics.hasUnreadErrors" position="bottom">
     <q-card square>
       <q-card-section class="row items-center no-wrap">
         <q-list>
@@ -23,50 +23,50 @@ import { useUserStore } from "stores/user";
 import { useDeFiChainStore } from "src/stores/defichain";
 
 export default defineComponent({
-  name: "App",
-  setup() {
-    const basics = useBasicsStore();
-    const quasar = useQuasar();
-    const user = useUserStore();
-    const deFiChain = useDeFiChainStore();
+	name: "App",
+	setup() {
+		const basics = useBasicsStore();
+		const quasar = useQuasar();
+		const user = useUserStore();
+		const deFiChain = useDeFiChainStore();
 
-    onBeforeMount(() => {
-      Promise.all([
-        basics.$persistedState.isReady(),
-        user.$persistedState.isReady(),
-        deFiChain.$persistedState.isReady(),
-      ])
-        .then(() => {
-          if (user.settings.customOceanUrl) {
-            deFiChain.setCustomOceanUrl(user.settings.customOceanUrl);
-          }
-          deFiChain.setChainNetwork(user.settings.chainNetwork);
+		onBeforeMount(() => {
+			Promise.all([
+				basics.$persistedState.isReady(),
+				user.$persistedState.isReady(),
+				deFiChain.$persistedState.isReady(),
+			])
+				.then(() => {
+					if (user.settings.customOceanUrl) {
+						deFiChain.setCustomOceanUrl(user.settings.customOceanUrl);
+					}
+					deFiChain.setChainNetwork(user.settings.chainNetwork);
 
-          deFiChain.fetchRewardDistribution();
-          deFiChain.fetchStats();
-          deFiChain.fetchPrices();
-          deFiChain.cleanupAllKnownMasterNodes();
-          user.fetchWatchedMasterNodesData();
-          basics.lastRefresh = new Date().toISOString();
-        })
-        .then(() => {
-          if (process.env.DEBUG)
-            console.log(
-              "Number of known masternodes:",
-              deFiChain.allKnownMasterNodes.length
-            );
-        });
-    });
+					deFiChain.fetchRewardDistribution();
+					deFiChain.fetchStats();
+					deFiChain.fetchPrices();
+					deFiChain.cleanupAllKnownMasterNodes();
+					user.fetchWatchedMasterNodesData();
+					basics.lastRefresh = new Date().toISOString();
+				})
+				.then(() => {
+					if (process.env.DEBUG)
+						console.log(
+							"Number of known masternodes:",
+							deFiChain.allKnownMasterNodes.length
+						);
+				});
+		});
 
-    const darkModeSetting = toRef(user.settings, "darkMode");
-    quasar.dark.set(darkModeSetting);
-    watch(darkModeSetting, (newSetting) => {
-      quasar.dark.set(newSetting);
-    });
+		const darkModeSetting = toRef(user.settings, "darkMode");
+		quasar.dark.set(darkModeSetting);
+		watch(darkModeSetting, (newSetting) => {
+			quasar.dark.set(newSetting);
+		});
 
-    return {
-      basics,
-    };
-  },
+		return {
+			basics,
+		};
+	},
 });
 </script>

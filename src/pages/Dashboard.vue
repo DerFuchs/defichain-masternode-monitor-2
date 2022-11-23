@@ -39,6 +39,8 @@ import { useUserStore } from "stores/user";
 import MintingsCount from "components/Dashboard/MintingsCount.vue";
 import RewardSum from "components/Dashboard/RewardSum.vue";
 import TxSum from "components/Dashboard/TxSum.vue";
+import MintingPerformance from "components/Dashboard/MintingPerformance.vue";
+
 import DashboardOptions from "src/components/Dashboard/DashboardOptions.vue";
 
 export default defineComponent({
@@ -48,6 +50,7 @@ export default defineComponent({
 		MintingsCount,
 		RewardSum,
 		TxSum,
+		MintingPerformance,
 		DashboardOptions,
 	},
 

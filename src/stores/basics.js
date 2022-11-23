@@ -30,10 +30,10 @@ export const useBasicsStore = defineStore('basics',
       'processingDataList',
       'formatting',
       'lastRefresh',
+      'messages',
       'version',
       'dashboardCardsContentEnterAnimation',
       'dashboardCardsContentLeaveAnimation',
-
     ]
   },
 
@@ -87,10 +87,25 @@ export const useBasicsStore = defineStore('basics',
       }
     },
 
+    getUuid() {
+      return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c => (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16))
+    },
+
+    addNotice(message, headline = null, rawObject = null) {
+      this.messages.push({
+        id: this.getUuid(),
+        type: 'notice',
+        headline: headline,
+        message: message,
+        raw: rawObject,
+        read: false,
+        time: new Date(),
+      })
+    },
+
     addError(message, headline = null, rawObject = null) {
       this.messages.push({
-        // uuid
-        id: ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c => (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)),
+        id: this.getUuid(),
         type: 'error',
         headline: headline,
         message: message,

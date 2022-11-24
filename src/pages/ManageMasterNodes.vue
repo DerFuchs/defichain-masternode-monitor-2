@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { defineComponent, reactive, watch } from "vue";
+import { defineComponent, reactive, watch, unref } from "vue";
 
 import { useUserStore } from "stores/user";
 
@@ -74,6 +74,13 @@ export default defineComponent({
 			},
 			...(user.settings?.manageMasternodesPage ?? {}),
 		});
+
+		if (
+			user.settings?.manageMasternodesPage.length == undefined ||
+			user.settings?.manageMasternodesPage.length == 0
+		) {
+			user.settings.manageMasternodesPage = unref(settings);
+		}
 
 		watch(settings, (newSettings) => {
 			user.settings.manageMasternodesPage = newSettings;

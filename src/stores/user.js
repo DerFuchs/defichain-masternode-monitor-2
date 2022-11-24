@@ -194,6 +194,8 @@ export const useUserStore = defineStore('user',{
         },
       })
 
+      defichain.fetchMasterNodeData(masterNodeDetails.id)
+
       basics.setProcessingFinished(processingKey)
 
       useBasicsStore().addNotice('Masternode added', name || identifier)

@@ -175,7 +175,8 @@ export default defineComponent({
 			defichain,
 			user,
 			settings,
-			totalDfi: computed(() => user.totalBlockPropertyContext("reward")),
+			//totalDfi: computed(() => user.totalBlockPropertyContext("reward")),
+			totalDfi: user.totalBlockPropertyContext("reward"),
 			totalDfiTxFees: computed(() =>
 				user.watchedMasterNodesContext.reduce(
 					(total, masternode) =>

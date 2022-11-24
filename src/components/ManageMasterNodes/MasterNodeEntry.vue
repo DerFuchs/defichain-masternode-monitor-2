@@ -127,7 +127,6 @@
 					</q-list>
 				</q-card-section>
 			</transition-group>
-
 			<transition-group
 				:enter-active-class="basics.dashboardCardsContentEnterAnimation"
 				:leave-active-class="basics.dashboardCardsContentLeaveAnimation"

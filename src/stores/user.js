@@ -135,10 +135,10 @@ export const useUserStore = defineStore('user',{
      *
      * @returns Number
      */
-    totalBlockPropertyContext: state => blockKey => state.watchedMasterNodesContext.reduce(
+    totalBlockPropertyContext: state => dataKey => state.watchedMasterNodesContext.reduce(
       (total, masternode) =>
         masternode.mintedBlocks.reduce(
-          (subTotal, minting) => parseFloat(minting[blockKey]) + subTotal,
+          (subTotal, minting) => parseFloat(minting[dataKey]) + subTotal,
           0
         ) + total,
       0
@@ -194,7 +194,8 @@ export const useUserStore = defineStore('user',{
         },
       })
 
-      defichain.fetchMasterNodeData(masterNodeDetails.id)
+      //await defichain.fetchMasterNodeData(masterNodeDetails.id)
+      await this.fetchWatchedMasterNodesData()
 
       basics.setProcessingFinished(processingKey)
 
